@@ -1,0 +1,121 @@
+h1 { text-align : center; }
+h2 { text-align : center; }
+
+.button-small {
+	font-size: 80%;
+	}
+.center { text-align: center; }
+.left-div { text-align : right;
+}
+.vertical-align-button-label {
+  position: relative;
+  -webkit-transform: translateY(20%);
+  -ms-transform: translateY(20%);
+  transform: translateY(20%)
+  }
+.right-div { 
+			text-align : middle; 
+}
+.align {
+		padding-bottom : 25px;
+		padding-top : 25px;
+		font-size : 20pt;
+}
+
+.onclick-eventselect{
+	background-color : green;
+	}
+.onmouseover-eventselect{
+	background-color : yellow
+}
+
+.onoff-container{
+	width : 150px;
+}
+.output {
+	min-height : 66px;
+}
+.table1{
+	width : 100%;
+	vertical-align : middle;
+	font-size : 20pt;
+}
+.label{
+	text-align : right;
+}
+	
+.state{
+	width : 95%;
+	height : 60px;
+	text-align: center;
+	transition: all 0.3s cubic-bezier(0.39, 0.575, 0.565, 1); 
+}
+.state-low {
+background-color : #CA3C3C;
+border: 2px solid #000000;
+color : #000000;
+}
+.state-high {
+background-color : #1CB841;
+border: 2px solid #FFFFFF;
+color : #FFFFFF;
+}
+.button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+.button-success {
+            background: rgb(28, 184, 65); /* this is a green */
+        }
+
+.button-error {
+            background: rgb(202, 60, 60); /* this is a maroon */
+        }
+/*credit for onoffswitch goes to https://proto.io/freebies/onoff/*/
+.onoffswitch {
+    position: relative; width: 131px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #FFFFF; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 50px; padding: 0; line-height: 50px;
+    font-size: 29px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 21px;
+    background-color: #1CB841; color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 21px;
+    background-color: #CA3C3C; color: #FFFFFF;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; width: 35px; margin: 7.5px;
+    background: #FFFFFF;
+    position: absolute; top: 0; bottom: 0;
+    right: 77px;
+    border: 2px solid #FFFFF; border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+}

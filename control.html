@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Command Center</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+	<link rel="stylesheet" href="css/control.css">
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/control.js"></script>
+
+</head>
+
+<body>
+
+<div class="pure-g">
+<div class="pure-u-1 pure-u-lg-1-3">
+<h1>Control Center</h1><hr>
+<table id="div-output" class="table1"></table>
+</div>
+
+<div class="pure-u-1 pure-u-lg-1-3">
+<h1>Sensors</h1><hr>
+<form class="pure-form pure-form-aligned" >
+<fieldset id="div-sensors">
+</fieldset>
+</form>
+</div>
+
+<div class="pure-u-1 pure-u-lg-1-3">
+<h1>Event Automation</h1><hr>
+<table id="eventOptions" class="table1"></table>
+<form class="pure-form pure-form-aligned">
+<fieldset id="div-schedule"><br>Start Date:
+		<input type="datetime-local" name="eventTimeDate" id="eventTimeDate"><br>
+		<div class="pure-g">
+		<div class="pure-u-1-3">
+		<input type="radio" id="repeat0" name ="repeat" value="once" checked>Once<br>
+		<input type="radio" id="repeat1" name ="repeat" value="hourly">Hourly<br>
+		</div>
+		<div class="pure-u-1-3">
+		<input type="radio" id="repeat2" name ="repeat" value="daily">Daily<br>
+		<input type="radio" id="repeat3" name ="repeat" value="weekly">Weekly<br>
+		</div>
+		<div class="pure-u-1-3">
+		<input type="radio" id="repeat4" name ="repeat" value="monthly">Monthly<br>
+		<input type="radio" id="repeat5" name ="repeat" value="yearly">Yearly<br>
+		</div>
+		</div><br>
+	<div class="right-div">
+		<button class="pure-button pure-button-primary" type="button" id="D:T" onclick="newEvent()">Create Event</button>
+	</div>
+	<h2>Scheduled</h2><hr>
+	<div id="upcomingEvents"></div>
+</fieldset>
+</form>
+</div>
+</div>
+
+</body>
+</html>
