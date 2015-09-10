@@ -13,7 +13,7 @@ var jobs = [];//stores all the jobs that are currently active
 server.listen(port);
 app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 app.get('/', function(req, res) { 
-    res.sendFile(path.join(__dirname, '/control-v2.html'));
+    res.sendFile(path.join(__dirname, '/control.html'));
 });
 console.log("Now listening on port " + port); //write to the console which port is being used
 
