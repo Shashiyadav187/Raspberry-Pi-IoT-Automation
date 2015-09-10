@@ -4,7 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);//create io object with an http/express server using socket.io module
 var path = require('path'); //built in path module, used to resolve paths of relative files
 var port = 3700; //stores port number to listen on
-var device = require('./device.json');//imports device object
+var device = require('./private/device.json');//imports device object
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var jobs = [];//stores all the jobs that are currently active
@@ -13,9 +13,15 @@ var jobs = [];//stores all the jobs that are currently active
 server.listen(port);
 app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 app.get('/', function(req, res) { 
-    res.sendFile(path.join(__dirname, '/control.html'));
+    res.sendFile(path.join(__dirname, '/public/control.html'));
 });
 console.log("Now listening on port " + port); //write to the console which port is being used
+
+// Authenticator
+app.use(express.basicAuth(function(user, pass, callback) {
+ var result = (user === 'testUser' && pass === 'testPass');
+ callback(null /* error */, result);
+}));
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)

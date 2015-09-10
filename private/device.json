@@ -1,0 +1,30 @@
+[
+    {
+        "pin": 4,
+        "state": "out",
+        "name": "Light",
+        "id": "light"
+    },
+    {
+        "pin": 2,
+        "state": "out",
+        "name": "Alarm",
+        "id": "buzzer"
+    },
+    {
+        "pin": 27,
+        "state": "in",
+        "name": "Button",
+        "id": "button",
+        "highmsg": "Button pressed",
+        "lowmsg": "No change..."
+    },
+    {
+        "pin": 17,
+        "state": "in",
+        "name": "Passive IR Sensor",
+        "id": "pir",
+        "lowmsg": "Heat detected",
+        "highmsg": "No change..."
+    }
+]
