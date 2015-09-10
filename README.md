@@ -6,4 +6,7 @@ To use this repo:
  2. "npm install"
  3. "node app.js"  
  4. Connect your web browser to the IP address of the pi and the port.
-  * i.e. xxx.yyy.zzz.aaa:3700
+  * i.e. xxx.yyy.zzz.aaa:3700  
+  
+NOTE: as of 9/9/2015 the latest version of Raspbian has broken the node module onoff, the app.js now requires superuser priveledges to run  
+[here] (http://seanbailey.tech/index.php/how-to-install-node-js-on-the-raspberry-pi/) is the current fix
