@@ -18,8 +18,7 @@ console.log("Now listening on port " + port); //write to the console which port 
 
 // Authenticator
 var basicAuth = require('basic-auth');
-function auth (req, res, next) {
-	console.log(next);//remove just wanted to see what is stored here
+function auth (req, res) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
     return res.sendStatus(401);
