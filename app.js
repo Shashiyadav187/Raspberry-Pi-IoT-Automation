@@ -18,10 +18,31 @@ app.get('/', function(req, res) {
 console.log("Now listening on port " + port); //write to the console which port is being used
 
 // Authenticator
-app.use(express.basicAuth(function(user, pass, callback) {
- var result = (user === 'testUser' && pass === 'testPass');
- callback(null /* error */, result);
-}));
+var basicAuth = require('basic-auth');
+
+var auth = function (req, res, next) {
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.send(401);
+  };
+
+  var user = basicAuth(req);
+
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  };
+
+  if (user.name === 'foo' && user.pass === 'bar') {
+    return next();
+  } else {
+    return unauthorized(res);
+  };
+};
+
+
+
+
+
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
