@@ -23,7 +23,7 @@ console.log("Now listening on port " + port); //write to the console which port 
 // Authenticator
 var basicAuth = require('basic-auth');
 
-var auth = function (req, res, next) {
+function auth (req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
     return res.send(401);
