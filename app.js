@@ -5,6 +5,7 @@ var io = require('socket.io')(server);//create io object with an http/express se
 var path = require('path'); //built in path module, used to resolve paths of relative files
 var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
+var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and 
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var jobs = [];//stores all the jobs that are currently active
@@ -14,19 +15,15 @@ server.listen(port);
 app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 app.get('/', auth);
 
-/*function(req, res) { 
-    res.sendFile(path.join(__dirname, '/public/control.html'));
-});
-*/
 console.log("Now listening on port " + port); //write to the console which port is being used
 
 // Authenticator
 var basicAuth = require('basic-auth');
-
 function auth (req, res, next) {
+	console.log(next);//remove just wanted to see what is stored here
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
+    return res.sendStatus(401);
   };
 
   var user = basicAuth(req);
@@ -35,12 +32,16 @@ function auth (req, res, next) {
     return unauthorized(res);
   };
 
-  if (user.name === 'foo' && user.pass === 'bar') {
-    return next();
+  if (user.name === usr_auth.name && user.pass === usr_auth.pass) { //compare to auth.json file values
+    return post_auth(req, res);
   } else {
     return unauthorized(res);
   };
 };
+//once user authentication is established
+function post_auth (req, res) { 
+    res.sendFile(path.join(__dirname, '/public/control.html'));
+});
 
 
 
