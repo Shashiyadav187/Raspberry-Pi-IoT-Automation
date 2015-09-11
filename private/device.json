@@ -16,8 +16,8 @@
         "state": "in",
         "name": "Button",
         "id": "button",
-        "highmsg": "Button pressed",
-        "lowmsg": "No change..."
+        "highmsg": "Button Pressed",
+        "lowmsg": "Button Released"
     },
     {
         "pin": 17,
@@ -25,6 +25,6 @@
         "name": "Passive IR Sensor",
         "id": "pir",
         "lowmsg": "Heat detected",
-        "highmsg": "No change..."
+        "highmsg": "Nothing"
     }
 ]
