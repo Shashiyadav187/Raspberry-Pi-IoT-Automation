@@ -41,7 +41,7 @@ function auth (req, res, next) {
 //once user authentication is established
 function post_auth (req, res) { 
     res.sendFile(path.join(__dirname, '/public/control.html'));
-});
+}
 
 
 
