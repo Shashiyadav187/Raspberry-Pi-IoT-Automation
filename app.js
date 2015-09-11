@@ -12,7 +12,7 @@ var jobs = [];//stores all the jobs that are currently active
 //build server functionality
 server.listen(port);
 app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
-app.get('/', auth, 
+app.get('/', auth);
 
 /*function(req, res) { 
     res.sendFile(path.join(__dirname, '/public/control.html'));
