@@ -57,7 +57,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	
 	var mideventdiv = eventdiv.appendChild(document.createElement("TD"));
 	mideventdiv.setAttribute("class", "onoff-container event");
-	var onoffswitch2 = createOnOffSwitch(id+2, "setOutput(this.id, this.checked);")
+	var onoffswitch2 = createOnOffSwitch(id+2)
 	mideventdiv.appendChild(onoffswitch2);
 	
 	lefteventdiv.style.cursor = 'pointer';
@@ -119,7 +119,7 @@ function createOnOffSwitch(id, onclickFunction)
 		onoffswitchinput.setAttribute("name", "onoffswitch");
 		onoffswitchinput.setAttribute("class", "onoffswitch-checkbox");
 		onoffswitchinput.setAttribute("id", id);
-		onoffswitchinput.setAttribute("onclick", onclickFunction);
+		if (onclickFunction !== undefined){ onoffswitchinput.setAttribute("onclick", onclickFunction); }//only set onclick attribute of a function is passed
 	onoffswitch.appendChild(onoffswitchinput);
 	var onoffswitchlabel = document.createElement("label");
 		onoffswitchlabel.setAttribute("class", "onoffswitch-label");
