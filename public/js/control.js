@@ -146,25 +146,28 @@ function enableEvent(id)//runs when area surrounding an event switch is selected
 socket.on('addInput', addInput);
 function addInput(data){
 	var id = data.id * 10 + 2
-		var div = document.getElementById("div-sensors").appendChild(document.createElement("DIV"));
-		if(data.val == 0)	{ div.setAttribute("class", "state state-low");}
-		else if(data.val == 1)	{ div.setAttribute("class", "state state-high");}//reflect current state of pin on GUI
-		else { div.setAttribute("class", "state"); }
-		
-		//var leftdiv = document.createElement("DIV");
-		//	leftdiv.setAttribute("class", "pure-u-1-2 left-div");
-		var d1 = document.createElement("DIV");
-		var name = document.createTextNode(data.name);
-		d1.appendChild(name);
-		div.appendChild(d1);
+	var div = document.getElementById("div-sensors").appendChild(document.createElement("DIV"));
+	if(data.val == 0)	{ div.setAttribute("class", "state state-low");}
+	else if(data.val == 1)	{ div.setAttribute("class", "state state-high");}//reflect current state of pin on GUI
+	else { div.setAttribute("class", "state"); }
+	
+	//var leftdiv = document.createElement("DIV");
+	//	leftdiv.setAttribute("class", "pure-u-1-2 left-div");
+	var d1 = document.createElement("DIV");
+	var name = document.createTextNode(data.name);
+	d1.appendChild(name);
+	div.appendChild(d1);
 
-		var d2 = document.createElement("DIV");
-		var status = document.createTextNode("NULL");
-		if(data.val == 0)	{ status.nodeValue = device.lowmsg;}
-		else if(data.val == 1)	{ status.nodeValue = device.highmsg;}//reflect current state of pin on GUI
-		d2.setAttribute("id", id);
-		d2.appendChild(status);
-		div.appendChild(d2);
+	var d2 = document.createElement("DIV");
+	var status = document.createTextNode("NULL");
+	if(data.val == 0)	{ status.nodeValue = device.lowmsg;}
+	else if(data.val == 1)	{ status.nodeValue = device.highmsg;}//reflect current state of pin on GUI
+	d2.setAttribute("id", id);
+	d2.appendChild(status);
+	div.appendChild(d2);
+	
+	//return for log file
+	socket.emit('addLog',{ "datetime": new Date(), "devicename" : device[x].name, "deviceid" : x, "val" : val, "ip" : myip })
 }
 
 socket.on('addEvent', addEvent);

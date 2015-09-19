@@ -9,6 +9,7 @@ var usr_auth = require ('./private/auth.json');//creates an object with user nam
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
+var fs = require('filestream');
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
@@ -53,10 +54,11 @@ function post_auth (req, res) {
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 }
 
-
-
-
-
+//write log for callback
+socket.on('addLog', function(socket) {
+	console.log("Writing log from: " + socket.request.connection.ip);
+	fs.appendFile('./log.txt', socket.request.connection.datetime + "," + socket.request.connection.devicename + "," + socket.request.connection.deviceid + "," + socket.request.connection.val + "," + socket.request.connection.ip + "\n", function (err) {console.log("Err writing log")});
+});
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
@@ -82,6 +84,7 @@ io.on('connection', function (socket) {//this function is run each time a client
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
   });
 });
+
 //initialize devices
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 0; x < device.length; x++){
