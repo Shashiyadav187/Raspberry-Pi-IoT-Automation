@@ -69,13 +69,13 @@ io.on('connection', function (socket) {//this function is run each time a client
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
   });
 });
-
 //initialize devices
+var pin[30];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 0; x < device.length; x++){
 	if (device[x].state == "in"){
-			device[x].dev = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
+			pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
 		(function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
-			device[index].dev.watch(function (err, value) {
+			pin[device[x].pin].watch(function (err, value) {
 				if (err) {throw err;}
 				if (value == 1){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
 				if (value == 0){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].lowmsg, "val" : value });}
@@ -85,7 +85,7 @@ for(var x = 0; x < device.length; x++){
 	}
 	
 	else if (device[x].state == "out"){
-			device[x].dev = new Gpio(device[x].pin, 'out');
+			pin[device[x].pin] = new Gpio(device[x].pin, 'out');
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
@@ -95,14 +95,14 @@ function setOutput(data){
 		for(var z = 0; z < data.length; z++){
 			var x = Math.floor(data[z] / 10);//finds the device array index of the operation
 			var y = (data[z] % 10)-3;//finds the value to be written (which is 1 or zero and is stored in the ones place)
-			device[x].dev.writeSync(y);
+			pin[device[x].pin].writeSync(y);
 			console.log(device[x].name + " set to : " + y);
 		}		
 	}
 	else{
 		var x = Math.floor(data / 10);//finds the device array index of the operation
 		var y = data % 10;//finds the value to be written (which is 1 or zero and is stored in the ones place)
-		device[x].dev.writeSync(y);
+		pin[device[x].pin].writeSync(y);
 		console.log(device[x].name + " set to : " + y);
 	}
 }
@@ -152,7 +152,7 @@ function cancelEvent(data) {
  
 function exitDevices() {//function unexports all Gpio objects
 	for (var x = 0; x < device.length; x++){
-		device[x].dev.unexport();
+		pin[device[x].pin].unexport();
 	}
 	console.log("all devices unexported");
 	server.close();
