@@ -8,6 +8,7 @@ var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and 
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
+var ngrok = require('ngrok');
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
@@ -15,6 +16,17 @@ server.listen(port);// note implement process.env.port
 app.get('/', auth);
 
 console.log("Now listening on port " + port); //write to the console which port is being used
+
+ngrok.connect({
+    proto: 'http', // http|tcp|tls 
+    addr: 8080, // port or network address 
+    auth: 'sn.bailey11@gmail.com:raspitunnels12', // http basic authentication for tunnel 
+    subdomain: 'raspi', // reserved tunnel name https://alex.ngrok.io, 
+    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com 
+}, function (err, url) {
+	console.log("URL: " + url);
+	console.log("NGROK ERR: " + err);
+});
 
 // Authenticator
 var basicAuth = require('basic-auth');
