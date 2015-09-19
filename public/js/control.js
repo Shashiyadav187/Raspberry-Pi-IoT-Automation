@@ -160,8 +160,6 @@ function addInput(data){
 
 		var d2 = document.createElement("DIV");
 		var status = document.createTextNode("NULL");
-		if(data.val == 0)	{ status.nodeValue = device.lowmsg;}
-		else if(data.val == 1)	{ status.nodeValue = device.highmsg;}//reflect current state of pin on GUI
 		d2.setAttribute("id", id);
 		d2.appendChild(status);
 		div.appendChild(d2);
