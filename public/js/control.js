@@ -1,7 +1,11 @@
 //all the socket on stuff should be in main file, the functions should be here
 //after everything has been improved of course
+var device;//global array that is the same as the array in the app.js and as is saved in device.json
+var socket = io
 
-var socket = io();
+socket.on("device", function(dev_var){
+	device = dev_var;//make variable global
+}
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
@@ -51,7 +55,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	eventcheck.setAttribute("type", "checkbox");
 	eventcheck.setAttribute("style", "display:none;");
 	eventcheck.setAttribute("id", id+4);
-	console.log(data.val);
+	console.log(data.val);//debug
 	if (data.val == 1) {eventcheck.setAttribute("checked", "true");}
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
@@ -161,16 +165,21 @@ socket.on('addInput', addInput);
 function addInput(data){
 	var id = data.id * 10 + 2
 		var div = document.getElementById("div-sensors").appendChild(document.createElement("DIV"));
-			div.setAttribute("class", "state");
+		if(data.val == 0)	{ div.setAttribute("class", "state state-low");}
+		else if(data.val == 1)	{ div.setAttribute("class", "state state-high");}//reflect current state of pin on GUI
+		else { div.setAttribute("class", "state"); }
+		
 		//var leftdiv = document.createElement("DIV");
 		//	leftdiv.setAttribute("class", "pure-u-1-2 left-div");
-		var p1 = document.createElement("P");
+		var d1 = document.createElement("DIV");
 		var name = document.createTextNode(data.name);
-		p1.appendChild(name);
-		div.appendChild(p1);
+		d1.appendChild(name);
+		div.appendChild(d1);
 
-		var p2 = document.createElement("P");
+		var d2 = document.createElement("DIV");
 		var status = document.createTextNode("NULL");
+		if(data.val == 0)	{ status.nodeValue = device.lowmsg;}
+		else if(data.val == 1)	{ status.nodeValue = device.highmsg;}//reflect current state of pin on GUI
 		p2.setAttribute("id", id);
 		p2.appendChild(status);
 		div.appendChild(p2);
