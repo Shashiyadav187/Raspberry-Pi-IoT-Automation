@@ -248,7 +248,8 @@ function inputUpdate(data){//function edits the fields of each sensor with javas
 	if(data.val == 1) { div_state.setAttribute("class", "state state-high");}
 	else { div_state.setAttribute("class", "state state-low");}
 }
-socket.on('outdate', x, y){
+socket.on('outdate', outdate);
+function outdate(x, y){
 	var id = (x * 10);
 	var check = document.getElementById(id);
 	if(id == 1) check.checked = true;
