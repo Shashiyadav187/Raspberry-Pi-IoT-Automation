@@ -169,7 +169,6 @@ function cancelEvent(data) {
 function exitDevices() {//function unexports all Gpio objects
 	
 	//kill ngrok
-	ngrok.disconnect(url); // stops one 
 	ngrok.disconnect(); // stops all 
 	ngrok.kill(); // kills ngrok process 
 	
