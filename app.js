@@ -21,11 +21,10 @@ ngrok.connect({
     proto: 'http', // http|tcp|tls 
     addr: 8080, // port or network address 
     auth: 'sn.bailey11@gmail.com:raspitunnels12', // http basic authentication for tunnel 
-    subdomain: 'raspi', // reserved tunnel name https://alex.ngrok.io, 
     authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com 
 }, function (err, url) {
 	console.log("URL: " + url);
-	console.log("NGROK ERR: " + err);
+	if(err)	console.log("NGROK ERR: " + err);
 });
 
 // Authenticator
