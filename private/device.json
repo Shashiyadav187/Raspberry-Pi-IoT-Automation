@@ -3,14 +3,14 @@
         "pin": 4,
         "state": "out",
         "name": "Light",
-        "id": "light"
+        "id": "light",
 		"active": "high"
     },
     {
         "pin": 2,
         "state": "out",
         "name": "Alarm",
-        "id": "buzzer"
+        "id": "buzzer",
 		"active": "high"
     },
     {
