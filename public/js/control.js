@@ -60,8 +60,8 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
 	lefteventdiv.appendChild(eventcheck);
-	if (data.val == 1) {eventcheck.checked = true;}
-	else if (data.val == 0) {eventcheck.checked = false;}
+	if (data.val == "1") {eventcheck.checked = true;}
+	else if (data.val == "0") {eventcheck.checked = false;}
 	
 	var mideventdiv = eventdiv.appendChild(document.createElement("TD"));
 	mideventdiv.setAttribute("class", "onoff-container event");
