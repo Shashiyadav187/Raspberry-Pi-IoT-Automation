@@ -36,7 +36,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	eventcheck.setAttribute("type", "checkbox");
 	eventcheck.setAttribute("style", "display:none;");
 	eventcheck.setAttribute("id", id+4);
-	console.log(data.val);//debug
+	//console.log(data.val);//debug
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
 	lefteventdiv.appendChild(eventcheck);
@@ -166,7 +166,7 @@ function addInput(data){
 
 
     //return for log file
-	socket.emit('addLog', { "datetime": new Date(), "devicename": device[x].name, "deviceid": x, "val": val, "ip": myip })
+	//socket.emit('addLog', { "datetime": new Date(), "devicename": device[x].name, "deviceid": x, "val": val, "ip": myip })
 
 }
 
