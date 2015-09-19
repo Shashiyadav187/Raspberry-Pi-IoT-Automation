@@ -57,10 +57,11 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	eventcheck.setAttribute("style", "display:none;");
 	eventcheck.setAttribute("id", id+4);
 	console.log(data.val);//debug
-	if (data.val == 1) {eventcheck.setAttribute("checked", "true");}
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
 	lefteventdiv.appendChild(eventcheck);
+	if (data.val == 1) {eventcheck.setAttribute("checked", "true");}
+	else if (data.val == 0) {eventcheck.setAttribute("checked", "false");}
 	
 	var mideventdiv = eventdiv.appendChild(document.createElement("TD"));
 	mideventdiv.setAttribute("class", "onoff-container event");
