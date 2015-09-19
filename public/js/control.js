@@ -4,8 +4,9 @@ var device;//global array that is the same as the array in the app.js and as is 
 var socket = io;
 
 socket.on('device', function (dev){
-	device = dev_var;//make variable global
-});
+	device = dev;//make variable global
+};
+);
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
