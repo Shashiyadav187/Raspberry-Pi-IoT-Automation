@@ -1,178 +1,135 @@
 var mongoose = require("mongoose");
-var projects = mongoose.model('project');
-var users = mongoose.model('user');
+var events = mongoose.model('event');
+var sensors = mongoose.model('sensor');
+var sensor_data = mongoose.model('sensor_data')
 
-exports.getProject = function (req, res) {
-    projects.findOne({ _id: req.params.id}, function(err, gotProjects) {
-                if (err) {
-                    console.log(err)
-                } else {
-                    res.send(gotProjects);
-                }
-    });
-}
 
-exports.getUserProjects = function (req, res) {
-
-    projects.find({ user_created_id: req.params.id }, function (err, gotProjects) {
-        if (err) {
-            console.log(err);
+exports.getEvents = function (req, res) {
+    events.find({},function (err, gotEvents) {
+		if(err) {
+			console.log("\n\nERR API getEvents: \n\n" + err)
             res.send(err);
-        } else {
-            res.send(gotProjects);
-        }
-    });
+		} else {
+			res.send(gotEvents);
+		}
+	});
 };
 
-exports.getProjects = function (req, res) {
-    
-    projects.find({}, function (err, gotProjects) {
-        if (err) {
-            console.log(err);
+exports.getSensors = function (req, res) {
+    sensors.find({},function (err, gotSensors) {
+		if(err) {
+			console.log("\n\nERR API getSensors: \n\n" + err)
             res.send(err);
-        } else {
-            res.send(gotProjects);
-        }
-    });
+		} else {
+			res.send(gotSensors);
+		}
+	});
 };
 
-exports.getUser = function (req, res) {
-
-    users.findOne({_id: req.params.id}, function (err, gotUser) {
-        if (err) {
-            console.log(err);
+exports.getData = function (req, res) {
+    sensor_data.find({_id:  req.params.id },function (err, gotData) {
+		if(err) {
+			console.log("\n\nERR API getData: \n\n" + err)
             res.send(err);
-        } else {
-            res.send(gotUser);
-        }
-    });
+		} else {
+			res.send(gotData);
+		}
+	});
 };
 
-exports.getUsers = function (req, res) {
-
-
-    users.find({}, function (err, gotUsers) {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        } else {
-            res.send(gotUsers);
-        }
-    });
-}
-
-exports.postUser = function (req, res) {
-    var user = new users({
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        student_id: req.body.student_id,
-        can_email: req.body.can_email,
-        verified_email: req.body.verified_email
-    });
-
-    user.save(function () {
-        res.send("Saved user: " + req.body.first_name)
-    });
+exports.addEvent = function (req, res) {
+    var event = new events({
+        conditional_type: req.body.conditional_type,
+        sensors_to_turn_on: req.body.sensors_to_turn_on,
+        sensors_to_turn_off: req.body.sensors_to_turn_off,
+        sensors_to_toggle: req.body.sensors_to_toggle,
+        times_to_execute: req.body.times_to_execute,
+        is_reoccuring: req.body.Boolean
+	});
+	
+	event.save(function () {
+		res.send("EVENT ADD SUCCESS");
+	});
 };
 
-exports.postProject = function (req, res) {
-    var project = new projects({
-        user_created_id: req.body.user_created_id,
-        title: req.body.title,
-        description: req.body.description,
-        min_age: req.body.min_age,
-        max_age: req.body.max_age,
-        required_gender: req.body.required_gender,
-        required_student_email: req.body.required_student_email,
-        other_requirements: req.body.other_requirements,
-        compensation: req.body.compensation,
-        time_commitment: req.body.time_commitment,
-        contact_name: req.body.contact_name,
-        contact_email: req.body.contact_email,
-        register_url: req.body.register_url,
-        location_address: req.body.location_address,
-        location_city: req.body.location_city,
-        location_state: req.body.location_state,
-        location_lat: req.body.location_lat,
-        location_long: req.body.location_long,
-        institution: req.body.institution,
-        start_date: req.body.start_date,
-        end_date: req.body.end_date
-    });
-
-    project.save(function () {
-        res.send("Saved study: " + req.body.title)
-    });
+exports.addSensor = function (req, res) {
+    var sensor = new sensors({
+        name: req.body.name,
+        is_input: req.body.is_input,
+        is_output: req.body.is_output
+	});
+	
+	sensor.save(function () {
+		res.send("SENSOR ADD SUCCESS");
+	});
 };
 
-exports.updateUser = function (req, res) {
-    //look up 'upsert'
-    users.update({ _id: req.params.id }, function (err, gotUser) {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        } else {
-            gotUser = new user({
-                first_name: req.body.first_name,
-                last_name: req.body.last_name,
-                email: req.body.email,
-                can_email: req.body.can_email
-            });
-
-            res.send("Updated user: " + req.body.first_name)
-        }
-    });
+exports.addData = function (req, res) {
+    var sensor_data = new sensor_data({
+        sensor: sensor,
+        data: Number
+	});
+	
+	sensor_data.save(function () {
+		res.send("DATA ADD SUCCESS");
+	});
 };
 
-exports.updateProject = function (req, res) {
-    projects.update({ _id: req.params.id }, function (err, gotProject) {
-        if (err) {
-            console.log(err);
+exports.setSensor = function (req, res) {
+	sensors.update({ _id: req.params.id }, function(err, gotSensor) {
+		if(err) {
+			console.log("\n\nERR API setSensor: \n\n" + err)
             res.send(err);
-        } else {
-            gotProject = new user({
-                title: req.body.title,
-                description: req.body.description,
-                min_age: req.body.min_age,
-                max_age: req.body.max_age,
-                required_gender: req.body.required_gender,
-                required_student_email: req.body.required_student_email,
-                other_requirements: req.body.other_requirements,
-                compensation: req.body.compensation,
-                time_commitment: req.body.time_commitment,
-                contact_name: req.body.contact_name,
-                contact_email: req.body.contact_email,
-                location_address: req.body.location_address,
-                location_city: req.body.location_city,
-                location_state: req.body.location_state,
-                location_lat: req.body.location_lat,
-                location_long: req.body.location_long,
-                institution: req.body.institution,
-                start_date: req.body.start_date,
-                end_date: req.body.end_date
-            });
-
-            res.send("Updated project: " + req.body.title)
-        }
-    });
+		} else {
+			gotSensor = new sensors({
+				name: req.body.name,
+				is_input: req.body.is_input,
+				is_output: req.body.is_output
+			});
+			
+			res.send("SENSOR SET SUCCESS");
+		}
+	});
 };
 
-exports.dropProject = function (req, res) {
-    //projects.remove({ _id: req.params.id }, function (err, gotProject) {
-    //    if (err) {
-    //        console.log(err);
-    //        res.send(err);
-    //    } else {
-    //        res.send("Project removed: " + req.params.id)
-    //    }
-    //});
-    projects.remove({ _id: req.params.id }, function (err, gotProject) {
-        if (err) {
-            console.log(err);
+exports.setEvent = function (req, res) {
+	sensors.update({ _id: req.params.id }, function(err, gotEvent) {
+		if(err) {
+			console.log("\n\nERR API setEvent: \n\n" + err)
             res.send(err);
-        } else {
-            res.send("Project removed: " + req.params.id)
-        }
-    });
+		} else {
+			gotEvent = new events({
+				conditional_type: req.body.conditional_type,
+				sensors_to_turn_on: req.body.sensors_to_turn_on,
+				sensors_to_turn_off: req.body.sensors_to_turn_off,
+				sensors_to_toggle: req.body.sensors_to_toggle,
+				times_to_execute: req.body.times_to_execute,
+				is_reoccuring: req.body.Boolean
+			});
+			
+			res.send("EVENT SET SUCCESS");
+		}
+	});
+};
+
+exports.delSensor = function (req, res) {
+	sensors.remove({ _id: req.params.id}, function(err, gotSensor) {
+		if(err) {
+			console.log("\n\nERR API delSensor: \n\n" + err)
+            res.send(err);
+		} else {
+			res.send("SENSOR DEL SUCCESS");
+		}
+	});
+};
+
+exports.delEvent = function (req, res) {
+	sensors.remove({ _id: req.params.id}, function(err, gotEvent) {
+		if(err) {
+			console.log("\n\nERR API delEvent: \n\n" + err)
+            res.send(err);
+		} else {
+			res.send("EVENT DEL SUCCESS");
+		}
+	});
 };

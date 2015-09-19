@@ -1,22 +1,93 @@
-var express = require('express');
-var app = express(); //express module must be installed using NPM
+
 var server = require('http').Server(app);
+var express = require('express');
 var io = require('socket.io')(server);//create io object with an http/express server using socket.io module
 var path = require('path'); //built in path module, used to resolve paths of relative files
-var port = 3700; //stores port number to listen on
+var port = 3000; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and 
-var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+//var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var jobs = [];//stores all the jobs that are currently active
 
-//build server functionality
+//mongodb requirements
+var favicon = require('static-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var db = require("./database/db") //for schema structures
+var index = require('./database/routes/index'); //for api functions
+
+var app = express(); //express module must be installed using NPM
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(favicon());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+})
+app.use(app.router);
+
+
+//////////////////
+// BUILD SERVER
+//////////////////
 server.listen(port);// note implement process.env.port
 app.get('/', auth);
 
 console.log("Now listening on port " + port); //write to the console which port is being used
 
-// Authenticator
+
+//////////////////
+// ERROR CATCHING
+//////////////////
+// catch 404 and forwarding to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+    //if (req.is('text/*')) {
+    //    req.text = '';
+    //    req.setEncoding('utf8');
+    //    req.on('data', function (chunk) { req.text += chunk });
+    //    req.on('end', next);
+    //} else {
+    //    next();
+    //}
+});
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+//////////////////
+// AUTHENTICATOR
+//////////////////
 var basicAuth = require('basic-auth');
 function auth (req, res) {
   function unauthorized(res) {
@@ -43,12 +114,10 @@ function post_auth (req, res) {
 }
 
 
-
-
-
-
-//build websocket functionality
-io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
+////////////////////////////////////
+//	START WEBSOCKET FUNCTIONS     //
+////////////////////////////////////
+/* io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	for(var x = 0; x < device.length; x++){
 		if (device[x].state == "out"){
@@ -177,4 +246,30 @@ process.on('cleanup', exitDevices);
     console.log(e.stack);
     process.exit(99);
   });
+   */
+////////////////////////////////////
+//	END WEBSOCKET FUNCTIONS       //
+////////////////////////////////////
+
+
+////////////////////////////////////
+//	START API FUNCTIONS           //
+////////////////////////////////////
+
+app.get('/getEvents', index.addEvent);
+app.get('/getSensors', index.addEvent);
+app.get('/getData/:id', index.addEvent);
+app.post('/addEvent', index.addEvent);
+app.post('/addSensor', index.addSensor);
+app.post('/addData', index.addData);
+app.set('/setEvent/:id', index.setEvent);
+app.set('/setSensor/:id', index.setSensor);
+app.delete('/delEvent/:id', index.delEvent);
+app.delete('/delSensor/:id', index.delSensor);
+
+module.exports = app;
+
+////////////////////////////////////
+//	END API FUNCTIONS             //
+////////////////////////////////////
  

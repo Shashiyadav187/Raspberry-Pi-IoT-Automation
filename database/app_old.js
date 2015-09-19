@@ -30,16 +30,16 @@ app.use(function (req, res, next) {
 app.use(app.router);
 
 
-app.get('/getproject/:id', index.getProject);
-app.get('/getprojects', index.getProjects);
-app.get('/getuserprojects/:id', index.getUserProjects);
-app.get('/getuser/:id', index.getUser);
-app.get('/getusers', index.getUsers);
-app.post('/postuser', index.postUser);
-app.post('/postproject', index.postProject);
-app.set('/updateuser', index.updateUser);
-app.set('/updateproject', index.updateProject);
-app.delete('/dropproject/:id', index.dropProject);
+app.get('/getEvents', index.getEvents);
+app.get('/getSensors', index.getSensors);
+app.get('/getData/:id', index.getData);
+//app.post('/addEvent', index.addEvent);
+app.post('/addSensor', index.addSensor);
+app.post('/addData', index.addData);
+app.set('/setEvent/:id', index.setEvent);
+app.set('/setSensor/:id', index.setSensor);
+app.delete('/delEvent/:id', index.delEvent);
+app.delete('/delSensor/:id', index.delSensor);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
