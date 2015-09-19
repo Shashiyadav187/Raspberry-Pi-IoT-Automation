@@ -43,7 +43,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	
 	var mideventdiv = eventdiv.appendChild(document.createElement("TD"));
 	mideventdiv.setAttribute("class", "onoff-container event");
-	var onoffswitch2 = createOnOffSwitch(id+2, data.val)
+	var onoffswitch2 = createOnOffSwitch(id+2, 0)
 	mideventdiv.appendChild(onoffswitch2);
 	
 	lefteventdiv.style.cursor = 'pointer';
