@@ -1,7 +1,7 @@
 //all the socket on stuff should be in main file, the functions should be here
 //after everything has been improved of course
 var device;//global array that is the same as the array in the app.js and as is saved in device.json
-var socket = io
+var socket = io;
 
 socket.on("device", function(dev_var){
 	device = dev_var;//make variable global
