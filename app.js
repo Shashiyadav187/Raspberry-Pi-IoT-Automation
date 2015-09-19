@@ -52,6 +52,7 @@ io.on('connection', function (socket) {//this function is run each time a client
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	for(var x = 0; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
+		console.log(val);
 		if (device[x].state == "out"){
 			socket.emit('addOutput', { "name" : device[x].name, "id" : x, "val" : val }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
 		}
