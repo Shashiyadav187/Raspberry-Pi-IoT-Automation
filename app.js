@@ -107,7 +107,7 @@ function setOutput(data){
 		var x = Math.floor(data / 10);//finds the device array index of the operation
 		var y = data % 10;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 		pin[device[x].pin].writeSync(y);
-		io.emit('outdate', x, y);
+		io.emit('outdate', x, y);//output update
 		console.log(device[x].name + " set to : " + y);
 	}
 }
