@@ -181,9 +181,9 @@ function addInput(data){
 		var status = document.createTextNode("NULL");
 		if(data.val == 0)	{ status.nodeValue = device.lowmsg;}
 		else if(data.val == 1)	{ status.nodeValue = device.highmsg;}//reflect current state of pin on GUI
-		p2.setAttribute("id", id);
-		p2.appendChild(status);
-		div.appendChild(p2);
+		d2.setAttribute("id", id);
+		d2.appendChild(status);
+		div.appendChild(d2);
 }
 
 socket.on('addEvent', addEvent);
