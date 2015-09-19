@@ -100,8 +100,8 @@ for(var x = 0; x < device.length; x++){
 			});
 		})(x);//passing x to index parameter of anonymous function
 		var pinstate = pin[device[x].pin].readSync();
-				if (pinstate == 1){ io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
-				else if (pinstate == 0){ io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
+				if (pinstate == 1){ io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[x].highmsg, "val" : value });}
+				else if (pinstate == 0){ io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[x].highmsg, "val" : value });}
 				
 	}
 	
