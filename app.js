@@ -99,6 +99,7 @@ function setOutput(data){
 			var x = Math.floor(data[z] / 10);//finds the device array index of the operation
 			var y = (data[z] % 10)-3;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 			pin[device[x].pin].writeSync(y);
+			io.emit('outdate', x, y);//output update, if anyone chnages the state of a light, all clients should see that change
 			console.log(device[x].name + " set to : " + y);
 		}		
 	}
@@ -106,6 +107,7 @@ function setOutput(data){
 		var x = Math.floor(data / 10);//finds the device array index of the operation
 		var y = data % 10;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 		pin[device[x].pin].writeSync(y);
+		io.emit('outdate', x, y);
 		console.log(device[x].name + " set to : " + y);
 	}
 }
