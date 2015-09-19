@@ -51,6 +51,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	eventcheck.setAttribute("type", "checkbox");
 	eventcheck.setAttribute("style", "display:none;");
 	eventcheck.setAttribute("id", id+4);
+	if (data.val == 1) {eventcheck.checked = true;}
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
 	lefteventdiv.appendChild(eventcheck);

@@ -51,11 +51,12 @@ function post_auth (req, res) {
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	for(var x = 0; x < device.length; x++){
+		var val = pin[device[x].pin].readSync();
 		if (device[x].state == "out"){
-			socket.emit('addOutput', { "name" : device[x].name, "id" : x }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
+			socket.emit('addOutput', { "name" : device[x].name, "id" : x, "val" : val }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
 		}
 		else if (device[x].state == "in"){
-			socket.emit('addInput', { "name" : device[x].name, "id" : x });//tell server to draw the sensor on webpage'
+			socket.emit('addInput', { "name" : device[x].name, "id" : x, "val" : val });//tell server to draw the sensor on webpage'
 		}
 	}
 	//socket.emit('addEvent', {"job" : 123456, "date" : "Every Monday at 10:25AM", "op" : [ "PIR on", "Light on"]});
