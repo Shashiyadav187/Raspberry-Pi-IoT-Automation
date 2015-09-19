@@ -49,7 +49,7 @@ function post_auth (req, res) {
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	socket.emit("device", device);//send device variable from device.json (MUST BE FIRST THING SENT)
+	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	for(var x = 0; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
