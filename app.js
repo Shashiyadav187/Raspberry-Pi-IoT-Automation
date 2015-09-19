@@ -93,11 +93,15 @@ for(var x = 0; x < device.length; x++){
 		(function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
 			pin[device[x].pin].watch(function (err, value) {
 				if (err) {throw err;}
-				if (value == 1){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
-				if (value == 0){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].lowmsg, "val" : value });}
+				else if (value == 1){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
+				else if (value == 0){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].lowmsg, "val" : value });}
 				console.log("\t" + device[index].name + " current Value: " + value);
 			});
 		})(x);//passing x to index parameter of anonymous function
+		var pinstate = pin[device[x].pin].readSync();
+				if (pinstate == 1){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
+				else if (pinstate == 0){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
+				
 	}
 	
 	else if (device[x].state == "out"){
