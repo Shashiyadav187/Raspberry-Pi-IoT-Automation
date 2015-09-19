@@ -168,6 +168,13 @@ function cancelEvent(data) {
 }
  
 function exitDevices() {//function unexports all Gpio objects
+	
+	//kill ngrok
+	ngrok.disconnect(url); // stops one 
+	ngrok.disconnect(); // stops all 
+	ngrok.kill(); // kills ngrok process 
+	
+	//move pins to main raspi thread
 	for (var x = 0; x < device.length; x++){
 		pin[device[x].pin].unexport();
 	}
