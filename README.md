@@ -9,4 +9,4 @@ To use this repo:
   * i.e. xxx.yyy.zzz.aaa:3700  
   
 NOTE: as of 9/9/2015 the latest version of Raspbian has broken the node module onoff, the app.js now requires superuser priveledges to run  
-[here] (http://seanbailey.tech/index.php/how-to-install-node-js-on-the-raspberry-pi/) is the current fix
+[here] (https://github.com/raspberrypi/linux/issues/1117) is the current fix

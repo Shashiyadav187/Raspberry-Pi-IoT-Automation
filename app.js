@@ -11,7 +11,7 @@ var schedule = require('node-schedule');//npm installed scheduling module
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
-server.listen(port);
+server.listen(port);// note implement process.env.port
 app.get('/', auth);
 
 console.log("Now listening on port " + port); //write to the console which port is being used
