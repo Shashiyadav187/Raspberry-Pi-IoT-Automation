@@ -8,14 +8,7 @@
     "node-schedule": "*",
     "onoff": "*",
     "socket.io": "*",
-    "body-parser": "*",
-    "cookie-parser": "*",
-    "debug": "*",
     "express": "*",
-    "jade": "*",
-    "mongoose": "*",
-    "morgan": "*",
-    "static-favicon": "*"
   },
   "devDependencies": {},
   "scripts": {
