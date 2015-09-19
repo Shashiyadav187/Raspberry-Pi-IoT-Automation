@@ -8,6 +8,7 @@
     "node-schedule": "*",
     "onoff": "*",
     "socket.io": "*",
+    "raspicam": "*",
     "express": "*"
   },
   "devDependencies": {},

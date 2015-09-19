@@ -5,11 +5,12 @@ var io = require('socket.io')(server);//create io object with an http/express se
 var path = require('path'); //built in path module, used to resolve paths of relative files
 var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
-var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and 
+var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fs = require('filestream');
+var RaspiCam = require("raspicam");
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
@@ -19,10 +20,10 @@ app.get('/', auth);
 console.log("Now listening on port " + port); //write to the console which port is being used
 
 ngrok.connect({
-    proto: 'http', // http|tcp|tls 
-    addr: port, // port or network address 
-    auth: usr_auth.name + ':' + usr_auth.pass, // http basic authentication for tunnel 
-    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com 
+    proto: 'http', // http|tcp|tls
+    addr: port, // port or network address
+    auth: usr_auth.name + ':' + usr_auth.pass, // http basic authentication for tunnel
+    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com
 }, function (err, url) {
 	console.log("URL: " + url);
 	if(err)	console.log("NGROK ERR: " + err);
@@ -49,7 +50,7 @@ function auth (req, res) {
   };
 };
 //once user authentication is established
-function post_auth (req, res) { 
+function post_auth (req, res) {
     res.sendFile(path.join(__dirname, '/public/control.html'));
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 }
@@ -76,8 +77,8 @@ io.on('connection', function (socket) {//this function is run each time a client
 	}
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
-	  
-	  
+
+
 	//write log for callback
 	socket.on('addLog', function(socket) {
 		console.log("Writing log from: " + socket.request.connection.ip);
@@ -102,12 +103,39 @@ for(var x = 0; x < device.length; x++){
 		var pinstate = pin[device[x].pin].readSync();
 		io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[x].highmsg, "val" : pinstate });
 	}
-	
+
 	else if (device[x].state == "out"){
 			pin[device[x].pin] = new Gpio(device[x].pin, 'out');
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
+
+// where the images will be stored
+app.use(express.static(__dirname + '/images'));
+
+ // options for the camera
+var cameraOptions = {
+    mode        : "photo",
+    output      : 'images/camera.jpg'
+};
+
+// start it up
+var camera = new require("raspicam")(cameraOptions);
+camera.start();
+
+// go to website/pic to see image
+app.get('/pic', function(req, res)
+{
+    res.sendFile(__dirname + '/images/camera.jpg');
+});
+
+// restart for timelapse -- so just close out
+camera.on("exit", function()
+{
+    camera.stop();
+    //console.log('Restarting camera...')
+    //camera.start()
+});
 
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
@@ -117,7 +145,7 @@ function setOutput(data){
 			pin[device[x].pin].writeSync(y);
 			io.emit('outdate', x, y);//output update, if anyone chnages the state of a light, all clients should see that change
 			console.log(device[x].name + " set to : " + y);
-		}		
+		}
 	}
 	else{
 		var x = Math.floor(data / 10);//finds the device array index of the operation
@@ -170,13 +198,13 @@ function cancelEvent(data) {
 	io.emit('undrawEvent', data);
 	console.log("Job ID " + data + " canceled");
 }
- 
+
 function exitDevices() {//function unexports all Gpio objects
-	
+
 	//kill ngrok
-	ngrok.disconnect(); // stops all 
-	ngrok.kill(); // kills ngrok process 
-	
+	ngrok.disconnect(); // stops all
+	ngrok.kill(); // kills ngrok process
+
 	//move pins to main raspi thread
 	for (var x = 0; x < device.length; x++){
 		pin[device[x].pin].unexport();
@@ -204,4 +232,3 @@ process.on('cleanup', exitDevices);
     console.log(e.stack);
     process.exit(99);
   });
- 
