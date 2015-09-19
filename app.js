@@ -70,7 +70,7 @@ io.on('connection', function (socket) {//this function is run each time a client
   });
 });
 //initialize devices
-var pin[30];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
+var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 0; x < device.length; x++){
 	if (device[x].state == "in"){
 			pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
