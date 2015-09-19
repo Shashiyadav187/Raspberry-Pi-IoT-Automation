@@ -252,6 +252,6 @@ socket.on('outdate', outdate);
 function outdate(x, y){
 	var id = (x * 10);
 	var check = document.getElementById(id);
-	if(id == 1) check.checked = true;
-	else if (id == 0) check.checked = false;
+	if(y == 1) check.checked = true;
+	else if (y == 0) check.checked = false;
 }
