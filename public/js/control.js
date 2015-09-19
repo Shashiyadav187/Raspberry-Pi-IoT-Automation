@@ -3,10 +3,6 @@
 var device;//global array that is the same as the array in the app.js and as is saved in device.json
 var socket = io;
 
-socket.on('device', deviceobject);
-function deviceobject(dev){
-	device = dev;
-}
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
@@ -266,4 +262,8 @@ function inputUpdate(data){//function edits the fields of each sensor with javas
 	var div_state = div.parentElement
 	if(data.val == 1) { div_state.setAttribute("class", "state state-high");}
 	else { div_state.setAttribute("class", "state state-low");}
-	}
+}
+socket.on('device', deviceobject);//global object
+function deviceobject(dev){
+	device = dev;
+}
