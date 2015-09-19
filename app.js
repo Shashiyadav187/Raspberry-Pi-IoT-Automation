@@ -49,6 +49,7 @@ function post_auth (req, res) {
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
+	socket.emit("device", device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	for(var x = 0; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
@@ -60,7 +61,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 			socket.emit('addInput', { "name" : device[x].name, "id" : x, "val" : val });//tell server to draw the sensor on webpage'
 		}
 	}
-	socket.emit("device", device);//send device variable from device.json
 	//socket.emit('addEvent', {"job" : 123456, "date" : "Every Monday at 10:25AM", "op" : [ "PIR on", "Light on"]});
 	socket.on('setOutput', setOutput);
 	socket.on('cancelEvent', cancelEvent);
