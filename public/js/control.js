@@ -3,9 +3,10 @@
 var device;//global array that is the same as the array in the app.js and as is saved in device.json
 var socket = io;
 
-socket.on('device', function (dev){
-	device = dev;//make variable global
-})
+socket.on('device', deviceobject);
+function deviceobject(dev){
+	device = dev;
+}
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
