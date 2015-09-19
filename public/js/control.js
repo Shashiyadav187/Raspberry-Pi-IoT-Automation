@@ -5,7 +5,7 @@ var socket = io
 
 socket.on("device", function(dev_var){
 	device = dev_var;//make variable global
-}
+});
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
