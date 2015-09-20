@@ -125,7 +125,8 @@ function setOutput(id, state){
 	var ids = id;//the ones place corresponds to the operation to be performed (all id's have been multiplied by 10)
 	if(state == true) ids++;//if the checkbox has been checked, set the ones place equal to 1, indicating that the on operation
 	socket.emit('setOutput', ids);
-	}
+	socket.emit('addLog',{ "ids" : ids, "state" : state})
+}
 	/*
 function enableEvent(id)//runs when area surrounding an event switch is selected
 {

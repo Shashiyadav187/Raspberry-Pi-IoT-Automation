@@ -76,8 +76,11 @@ io.on('connection', function (socket) {//this function is run each time a client
 	}
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
-
-  });
+	});
+	
+	socket.on('addLog', function() {
+		console.log('Socket resp from client addlog: \n' + JSON.stringify(socket));
+	});
 });
 
 //initialize devices
