@@ -1,38 +1,5 @@
 var show_camera_page = true;
 
-//draw device switches
-for(var i = 0; i < devices.length; i++) {
-	var name = devices[i].name;
-	var state = devices[i].state;
-	var active = devices[i].active;
-	var highmsg = devices[i].highmsg;
-	var lowmsg = devices[i].lowmsg;
-	var checked = "";
-	
-	if(state == "out") {
-		//for output
-		id = i*10 + 2;
-		if(active == "high") checked = "checked"
-		
-		$('#input_div')[0].innerHTML = $('#input_div')[0].innerHTML + '<div style="margin:20px" ><input id="' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
-	} else {
-		//for input
-		id = i*10;
-		var active = true;
-		var className;
-		if(active) {
-			checked = highmsg
-			className = "list-group-item-success";
-		}
-		else {
-			checked = lowmsg
-			className = "list-group-item-danger";
-		}
-		
-		$('#output_div')[0].innerHTML = $('#output_div')[0].innerHTML + '<a id="' + id + '" href="#" style="text-align: center;" class="list-group-item ' + className + '">' + checked + '</a><br/>'
-	}
-}
-
 function switchPage(page_from, page_to) {
 	$('#' + page_from).css('display','none');
 	$('#' + page_to).css('display','block');
