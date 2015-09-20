@@ -2,6 +2,10 @@
 // set it to 0 to run on another computer -> doesn't use pi-specific libraries
 var on_pi = 1;
 
+// this variable is set to 1 to use ngrok
+// set it to 0 to only use localhost so we don't overtake the URL
+var use_ngrok = 1;
+
 var express = require('express');
 var app = express(); //express module must be installed using NPM
 var server = require('http').Server(app);
@@ -17,7 +21,9 @@ if (on_pi == 1){
     var RaspiCam = require("raspicam");
 }
 var schedule = require('node-schedule');//npm installed scheduling module
-var ngrok = require('ngrok');
+if (use_ngrok == 1){
+    var ngrok = require('ngrok');
+}
 var fs = require('filestream');
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
@@ -28,6 +34,7 @@ app.get('/', auth);
 
 console.log("Now listening on port " + port); //write to the console which port is being used
 
+if (use_ngrok == 1){
 ngrok.connect({
     proto: 'http', // http|tcp|tls
     addr: port, // port or network address
@@ -36,6 +43,7 @@ ngrok.connect({
 	console.log("URL: " + url);
 	if(err)	console.log("NGROK ERR: " + err);
 });
+}
 
 // Authenticator
 var basicAuth = require('basic-auth');
@@ -281,9 +289,11 @@ function cancelEvent(data) {
 
 function exitDevices() {//function unexports all Gpio objects
 
+    if (use_ngrok){
 	//kill ngrok
 	ngrok.disconnect(); // stops all
 	ngrok.kill(); // kills ngrok process
+    }
 
     if (on_pi == 1){
 	//move pins to main raspi thread
