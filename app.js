@@ -80,7 +80,7 @@ app.use('/', express.static(path.join(__dirname, 'stream')));
 
 var sockets = {};
 
-if (on_pi == 1){
+
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
@@ -139,7 +139,6 @@ io.on('connection', function (socket) {//this function is run each time a client
         fss.unwatchFile('./stream/image_stream.jpg');
       }
 });
-}
 
 if (on_pi == 1){
 //initialize devices
