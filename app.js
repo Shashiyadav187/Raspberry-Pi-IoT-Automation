@@ -179,51 +179,6 @@ if(device[0].camera == "true") {
 	camera.start();
 }
 
-
-// send mail with defined transport object
-/*
-transporter.sendMail(email.message, function(error, info){
-    if(error){
-        console.log(error);
-    }else{
-        console.log('Message sent: ' + info.response);
-    }
-});
-*/
-
-
-/* +++++++++ File Streaming ++++++++++++ */
-/*
-function stopStreaming() {
-  if (Object.keys(sockets).length == 0) {
-    app.set('watchingFile', false);
-    if (proc) proc.kill();
-    fss.unwatchFile('./stream/image_stream.jpg');
-  }
-}
-*/
-/*
-function startStreaming(io) {
-
-  if (app.get('watchingFile')) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-    return;
-  }
-
-  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100"];
-  proc = spawn('raspistill', args);
-
-  console.log('Watching for changes...');
-
-  app.set('watchingFile', true);
-
-  fss.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  })
-
-}
-
-*/
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
 		for(var z = 0; z < data.length; z++){
