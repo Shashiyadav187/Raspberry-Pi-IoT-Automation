@@ -1,4 +1,7 @@
 [
+	{
+		"camera" : "true"
+	},
     {
         "pin": 4,
         "state": "out",

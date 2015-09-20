@@ -14,10 +14,22 @@ var path = require('path'); //built in path module, used to resolve paths of rel
 var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
-var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+// pi specific libraries
+if (on_pi == 1){
+    var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+    var fss = require('fs');
+    var RaspiCam = require("raspicam");
+}
 var schedule = require('node-schedule');//npm installed scheduling module
+<<<<<<< HEAD
+if (use_ngrok == 1){
+    var ngrok = require('ngrok');
+}
+var fs = require('filestream');
+=======
 var ngrok = require('ngrok');
 var fss = require('fs');
+>>>>>>> master
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
 
@@ -27,8 +39,18 @@ app.get('/', auth);
 
 //console.log("Now listening on port " + port); //write to the console which port is being used
 
+<<<<<<< HEAD
+if (use_ngrok == 1){
+ngrok.connect({
+    proto: 'http', // http|tcp|tls
+    addr: port, // port or network address
+    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com
+}, function (err, url) {
+	console.log("URL: " + url);
+=======
 var ngrok_obj = require('./private/ngrok.json');
 ngrok.connect(ngrok_obj, function (err, url) {
+>>>>>>> master
 	if(err)	console.log("NGROK ERR: " + err);
 	else console.log("URL: " + url);
 });
@@ -74,7 +96,12 @@ app.use('/', express.static(path.join(__dirname, 'stream')));
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
+<<<<<<< HEAD
+    for(var x = 0; x < device.length; x++){
+        if (on_pi){
+=======
 	for(var x = 1; x < device.length; x++){
+>>>>>>> master
 		var val = pin[device[x].pin].readSync();
         } else {
             var val = x;
@@ -182,8 +209,13 @@ function startStreaming(io) {
   })
 
 }
+<<<<<<< HEAD
+}
+
+=======
 
 */
+>>>>>>> master
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
 		for(var z = 0; z < data.length; z++){
