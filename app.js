@@ -119,7 +119,7 @@ if(device[0].camera == "true") {
 	height : 480,
 	width : 640,
 	quality : 75,
-    output      : 'images/img%d.jpg'
+    output      : 'images/img%t.jpg'
 	};
 	// start it up
 	var camera = new require("raspicam")(cameraOptions);
