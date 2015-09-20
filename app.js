@@ -112,8 +112,9 @@ io.on('connection', function (socket) {//this function is run each time a client
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 1; x < device.length; x++){
 	if (device[x].state == "in"){
-			pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
-		(function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
+			if (on_pi){
+                pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
+        (function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
 			pin[device[x].pin].watch(function (err, value) {
 				if (err) {throw err;}
 				else if (value == 1){ io.emit('inputUpdate', { "id" : index * 10 + 2, "msg" : device[index].highmsg, "val" : value });}
@@ -123,13 +124,22 @@ for(var x = 1; x < device.length; x++){
 		})(x);//passing x to index parameter of anonymous function
 		var pinstate = pin[device[x].pin].readSync();
 		io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[x].highmsg, "val" : pinstate });
+            } else {
+
+            }
 	}
 
 	else if (device[x].state == "out"){
-			pin[device[x].pin] = new Gpio(device[x].pin, 'out');
+			if (on_pi){
+                n[device[x].pin] = new Gpio(device[x].pin, 'out');
+            } else {
+                device[x] = 'out';
+            }
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
+
+if (on_pi){
 //initialize camera if device file specifies "true"
 if(device[0].camera == "true") {
 	var cameraOptions = { // options for the camera from device.json
@@ -153,6 +163,7 @@ if(device[0].camera == "true") {
 	//console.log('Restarting camera...')
 	//camera.start()
 	});
+}
 }
 
 
