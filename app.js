@@ -83,7 +83,9 @@ io.on('connection', function (socket) {//this function is run each time a client
 	socket.on('cancelEvent', cancelEvent);
 	socket.on('newEvent', newEvent);
 	socket.on('takepic', function(){
-		emailPicture(picture, "sn.bailey11@gmail.com");
+		picture();
+		emailPicture("sn.bailey11@gmail.com");
+		console.log("picture emailed");
 	});
 	for(var x=0; x < jobs.length; x++){
 		socket.emit('addEvent', jobs[x]);
@@ -128,7 +130,7 @@ if(device[0].camera == "true") {
 	width : device[0].width,
 	quality : device[0].quality,
 	timeout : device[0].timeout,
-    output      : 'images/img%d.jpg'
+    output      : 'images/img0.jpg'
 	};
 	// start it up
 	var camera = new require("raspicam")(cameraOptions);
