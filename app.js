@@ -71,7 +71,7 @@ var transporter = nodemailer.createTransport({
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	console.log("New Connection from IP: " + socket.handshake.headers.x-forwarded-for + "\t" + io.engine.clientsCount + " socket(s) connected");
+//	console.log("New Connection from IP: " + socket.handshake.headers('x-forwarded-for') + "\t" + io.engine.clientsCount + " socket(s) connected");
 	console.log("time: " + socket.handshake.headers.time);
 	console.log("host: " + socket.handshake.headers.host);
 	console.log("browser: " + socket.handshake.headers.user-agent);
