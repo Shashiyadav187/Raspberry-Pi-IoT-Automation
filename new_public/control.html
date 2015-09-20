@@ -32,6 +32,42 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+	
+	<script>
+	var devices = [
+		{
+			"pin": 4,
+			"state": "out",
+			"name": "Light",
+			"id": "light",
+			"active": "high"
+		},
+		{
+			"pin": 2,
+			"state": "out",
+			"name": "Alarm",
+			"id": "buzzer",
+			"active": "high"
+		},
+		{
+			"pin": 27,
+			"state": "in",
+			"name": "Button",
+			"id": "button",
+			"highmsg": "Button Pressed",
+			"lowmsg": "Button Released"
+		},
+		{
+			"pin": 17,
+			"state": "in",
+			"name": "Passive IR Sensor",
+			"id": "pir",
+			"lowmsg": "Heat detected",
+			"highmsg": "Nothing"
+		}
+	]
+	
+	</script>
   </head>
 
   <body>
@@ -547,5 +583,7 @@
 		show_time_gui();
 	} );
 	</script>
+	<!-- <script type="text/javascript" src="/socket.io/socket.io.js"></script> -->
+    <!-- <script src="./js/control.js"></script> -->
 
 </body></html>

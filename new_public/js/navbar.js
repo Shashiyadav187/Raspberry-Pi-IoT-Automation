@@ -1,5 +1,18 @@
 var show_camera_page = true;
 
+//draw device switches
+for(var i = 0; i < devices.length; i++) {
+	var id = devices[i].id;
+	var name = devices[i].name;
+	var state = devices[i].state;
+	//var onswitch = setOutput(this.id, this.checked);
+	var checked
+	if(state == "in") checked = "checked";
+	else checked = "";
+	
+	$('#devices_div')[0].innerHTML = $('#devices_div')[0].innerHTML + '<div style="margin:20px" ><input id="device_' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
+}
+
 function switchPage(page_from, page_to) {
 	$('#' + page_from).css('display','none');
 	$('#' + page_to).css('display','block');
