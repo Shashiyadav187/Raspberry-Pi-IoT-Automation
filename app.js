@@ -133,7 +133,7 @@ if(device[0].camera == "true") {
 	//camera events
 	camera.on('start', function(err, timestamp)
 	{
-		if(err === undefined) console.log("dope");
+		if(err == null) console.log("dope");
 		console.log(util.inspect(timestamp));
 	});	
 	camera.on('read', function(err, timestamp, path)
