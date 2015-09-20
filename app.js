@@ -153,23 +153,24 @@ if(device[0].camera == "true") {
 		console.log(util.inspect(path));
 	});
 
-	// send image in email
-	fs.readFile("/img0.jpg", function (err, data) {
-	transporter.send_mail(
-	{       sender: 'raspberry.pi.iot.automation@gmail.com',
-	        to:'ee.tinkerer@gmail.com',
-	        subject:'Photo taken!',
-	        body:'',
-	        attachments : [{'filename': 'img0.jpg','contents':data}]
-	}),function(error, success)});
 
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
 	{
-		console.log("exit");
-		camera.stop();
-		console.log("picture taken at: " + util.inspect(timestamp));
+			console.log("exit");
+			camera.stop();
+			console.log("picture taken at: " + util.inspect(timestamp));
+				// send image in email
+		var data = fs.readFileSync("/img0.jpg"); 
+		transporter.send_mail(
+		{       sender: 'raspberry.pi.iot.automation@gmail.com',
+				to:'ee.tinkerer@gmail.com',
+				subject:'Photo taken!',
+				body:'',
+				attachments : [{'filename': 'img0.jpg','contents':data}]
+		},function(error, info){console.log(util.inspect(error);console.log(util.inspect(info));)});
 	});
+	
 	camera.start();
 }
 
