@@ -240,7 +240,7 @@ function newEvent(){
 		{
 			if (chkbox.checked == true)
 			{
-				operations.push(parseInt(chkbox.id) + 1));
+				operations.push(parseInt(chkbox.id) + 1);
 			}
 			else
 			{
