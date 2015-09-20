@@ -10,6 +10,7 @@ var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, mus
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fs = require('filestream');
+var fss = require('fs');
 var RaspiCam = require("raspicam");
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
@@ -105,7 +106,7 @@ io.on('connection', function (socket) {//this function is run each time a client
       if (Object.keys(sockets).length == 0) {
         app.set('watchingFile', false);
         if (proc) proc.kill();
-        fs.unwatchFile('./stream/image_stream.jpg');
+        fss.unwatchFile('./stream/image_stream.jpg');
       }
 
       // for file streaming
@@ -115,7 +116,7 @@ io.on('connection', function (socket) {//this function is run each time a client
       if (Object.keys(sockets).length == 0) {
         app.set('watchingFile', false);
         if (proc) proc.kill();
-        fs.unwatchFile('./stream/image_stream.jpg');
+        fss.unwatchFile('./stream/image_stream.jpg');
       }
 });
 
@@ -177,7 +178,7 @@ function stopStreaming() {
   if (Object.keys(sockets).length == 0) {
     app.set('watchingFile', false);
     if (proc) proc.kill();
-    fs.unwatchFile('./stream/image_stream.jpg');
+    fss.unwatchFile('./stream/image_stream.jpg');
   }
 }
 
@@ -195,7 +196,7 @@ function startStreaming(io) {
 
   app.set('watchingFile', true);
 
-  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+  fss.watchFile('./stream/image_stream.jpg', function(current, previous) {
     io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
   })
 
