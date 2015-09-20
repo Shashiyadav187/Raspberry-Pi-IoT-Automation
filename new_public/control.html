@@ -404,33 +404,59 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Add an Event</h1>
-		<div style="display:-webkit-box;">
-			<div class="col-xs-2 col-sm-2">
-				<div class="list-group">
-				  <a id="if" onclick="active_item('if', 'list1')" class="list1 list-group-item active">If</a>
+		<div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="list-group">
+					  <a id="if" onclick="active_item('if', 'list1')" class="list1 list-group-item active">If</a>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="list-group">
+					  <a id="time" onclick="active_item('time', 'list2'); show_time_gui();" class="list2 list-group-item active">Time</a>
+					  <a id="gpio" onclick="active_item('gpio', 'list2'); show_gpio_gui();" class="list2 list-group-item">GPIO Event</a>
+					</div>
+				</div>
+				<div class="gpio_list col-sm-3" style="display:none">
+					<div class="list-group">
+					  <a id="lamp_if" onclick="active_item('lamp_if', 'list21')" class="list21 list-group-item active">Lamp</a>
+					  <a id="buzzer_if" onclick="active_item('buzzer_if', 'list21')" class="list21 list-group-item">Buzzer</a>
+					</div>
+				</div>
+				<div class="gpio_list col-sm-3" style="display:none">
+					<div class="list-group">
+					  <a id="on_if" onclick="active_item('on_if', 'list22')" class="list22 list-group-item active">On</a>
+					  <a id="off_if" onclick="active_item('off_if', 'list22')" class="list22 list-group-item">Off</a>
+					</div>
+				</div>
+				<div class='time_list col-sm-3'>
+					<div class="form-group">
+						<div class='input-group date' id='datetimepicker1'>
+							<input type='text' class="form-control" />
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col-sm-2">
-				<div class="list-group">
-				  <a id="time" onclick="active_item('time', 'list2')" class="list2 list-group-item active">Time</a>
-				  <a id="gpio" onclick="active_item('gpio', 'list2')" class="list2 list-group-item">GPIO Event</a>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="list-group">
+					  <a id="then" onclick="active_item('then', 'list3')" class="list3 list-group-item active">Then</a>
+					</div>
 				</div>
-			</div>
-			<div class="col-xs-2 col-sm-2">
-				<div class="list-group">
-				  <a id="then" onclick="active_item('then', 'list3')" class="list3 list-group-item active">Then</a>
+				<div class="col-sm-3">
+					<div class="list-group">
+					  <a id="lamp_then" onclick="active_item('lamp_then', 'list4')" class="list4 list-group-item active">Lamp</a>
+					  <a id="buzzer_then" onclick="active_item('buzzer_then', 'list4')" class="list4 list-group-item">Buzzer</a>
+					</div>
 				</div>
-			</div>
-			<div class="col-xs-2 col-sm-2">
-				<div class="list-group">
-				  <a id="lamp" onclick="active_item('lamp', 'list4')" class="list4 list-group-item active">Lamp</a>
-				  <a id="buzzer" onclick="active_item('buzzer', 'list4')" class="list4 list-group-item">Buzzer</a>
-				</div>
-			</div>
-			<div class="col-xs-2 col-sm-2">
-				<div class="list-group">
-				  <a id="on" onclick="active_item('on', 'list5')" class="list5 list-group-item active">On</a>
-				  <a id="off" onclick="active_item('off', 'list5')" class="list5 list-group-item">Off</a>
+				<div class="col-sm-3">
+					<div class="list-group">
+					  <a id="on" onclick="active_item('on', 'list5')" class="list5 list-group-item active">On</a>
+					  <a id="off" onclick="active_item('off', 'list5')" class="list5 list-group-item">Off</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -485,16 +511,24 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-ui.js"></script>
     <script src="./js/navbar.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./js/ie10-viewport-bug-workaround.js"></script>
 	<!-- Switches -->
     <script src="./js/bootstrap-switch.js"></script>
+	<!-- Date Picker -->
+    <script src="./js/bootstrap-datepicker.js"></script>
+    <script src="./js/jquery-ui-timepicker-addon.js"></script>
     <script>
     $(function(argument) {
-      $('[type="checkbox"]').bootstrapSwitch();
-    })
+		$('[type="checkbox"]').bootstrapSwitch();
+    });
+	
+	$(function () {
+		$('#datetimepicker1').datetimepicker();
+    });
 	</script>
 	<!-- Data Table -->
     <script src="./js/jquery.dataTables.min.js"></script>
@@ -507,7 +541,8 @@
 		} else {
 			$('.camera_li').css('display','none');
 		}
-		addToTbl('sensor_data_tbl',['asdf','asdf','asdf','asdf','asdf','asdf'])
+		addToTbl('sensor_data_tbl',['asdf','asdf','asdf','asdf','asdf','asdf']);
+		show_time_gui();
 	} );
 	</script>
 

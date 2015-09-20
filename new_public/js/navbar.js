@@ -44,3 +44,13 @@ function active_item(active_id, list_class) {
 	}
 	$('#' + active_id)[0].className = list_class + ' list-group-item active';
 }
+
+function show_time_gui() {
+	$(".gpio_list").css('display','none');
+	$(".time_list").css('display','block');
+}
+
+function show_gpio_gui() {
+	$(".gpio_list").css('display','block');
+	$(".time_list").css('display','none');
+}
