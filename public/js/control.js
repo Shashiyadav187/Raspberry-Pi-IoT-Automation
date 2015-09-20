@@ -6,6 +6,8 @@ var socket = io();
 socket.on('device', deviceobject);//global object
 function deviceobject(dev){
 	devices = dev;
+	$('#output_div')[0].innerHTML = "";
+	$('#input_div')[0].innerHTML = "";
 	for(var i = 0; i < devices.length; i++) {
 		var name = devices[i].name;
 		var state = devices[i].state;
