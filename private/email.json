@@ -1,0 +1,16 @@
+{
+	"login" : {
+		"service": "Gmail",
+		"auth" : {
+			"user" : "raspberry.pi.iot.automation@gmail.com",
+			"pass" : "raspiiotautomation"
+		}
+	},
+	"message" : {
+		"from" : "Raspberry Pi <raspberry.pi.iot.automation@gmail.com>",
+		"to" : "ee.tinkerer@gmail.com",
+		"subject" : "Hello",
+		"text" : "Hello world ✔",
+		"html" : "<b>Hello world ✔</b><p>trying email config json now</p>"
+	}
+}

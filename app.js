@@ -3,7 +3,6 @@ var app = express(); //express module must be installed using NPM
 var server = require('http').Server(app);
 var io = require('socket.io')(server);//create io object with an http/express server using socket.io module
 var path = require('path'); //built in path module, used to resolve paths of relative files
-var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
@@ -13,9 +12,10 @@ var fs = require('fs');
 var util = require('util');
 var nodemailer = require('nodemailer');
 var jobs = [];//stores all the jobs that are currently active
+var email = require('./private/email.json');
 
 //build server functionality
-server.listen(port);// note implement process.env.port
+server.listen(ngrok.addr);// note implement process.env.port
 app.get('/', auth);
 
 //console.log("Now listening on port " + port); //write to the console which port is being used
@@ -55,19 +55,8 @@ function post_auth (req, res) {
 	console.log("Login from: " + ip);
 }
 
-var spawn = require('child_process').spawn;
-var proc;
-
-app.use('/', express.static(path.join(__dirname, 'stream')));
-
 // create reusable transporter object using SMTP transport
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'raspberry.pi.iot.automation@gmail.com',
-        pass: 'raspiiotautomation'
-    }
-});
+var transporter = nodemailer.createTransport(email.login);
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
@@ -184,17 +173,9 @@ if(device[0].camera == "true") {
 	camera.start();
 }
 
-// setup e-mail data with unicode symbols
-var mailOptions = {
-    from: 'Raspberry Pi <raspberry.pi.iot.automation@gmail.com>', // sender address
-    to: 'ee.tinkerer@gmail.com', // list of receivers
-    subject: 'Hello', // Subject line
-    text: 'Hello world ✔', // plaintext body
-    html: '<b>Hello world ✔</b>' // html body
-};
 
 // send mail with defined transport object
-transporter.sendMail(mailOptions, function(error, info){
+transporter.sendMail(email.message, function(error, info){
     if(error){
         console.log(error);
     }else{
