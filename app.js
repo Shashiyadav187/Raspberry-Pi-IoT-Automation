@@ -87,13 +87,21 @@ io.on('connection', function (socket) {//this function is run each time a client
 
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
-<<<<<<< HEAD
 	});
-	
+
 	socket.on('addLog', function() {
 		console.log('Socket resp from client addlog: \n' + util.inspect(socket));
 	});
-=======
+
+      // for file streaming
+      delete sockets[socket.id];
+
+      // no more sockets, kill the stream
+      if (Object.keys(sockets).length == 0) {
+        app.set('watchingFile', false);
+        if (proc) proc.kill();
+        fs.unwatchFile('./stream/image_stream.jpg');
+      }
 
       // for file streaming
       delete sockets[socket.id];
@@ -106,7 +114,6 @@ io.on('connection', function (socket) {//this function is run each time a client
       }
 
   });
->>>>>>> live-streaming
 });
 
 //initialize devices
