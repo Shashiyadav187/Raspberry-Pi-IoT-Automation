@@ -1,6 +1,10 @@
 [
 	{
-		"camera" : "true"
+		"camera" : "true",
+		"height" : 480,
+		"width" : 640,
+		"quality" : 75,
+		"timeout" : 10
 	},
     {
         "pin": 4,

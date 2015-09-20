@@ -115,11 +115,12 @@ for(var x = 1; x < device.length; x++){
 //initialize camera if device file specifies "true"
 if(device[0].camera == "true") {
 	var cameraOptions = { // options for the camera from device.json
-    mode        : "photo",
-	height : 480,
-	width : 640,
-	quality : 75,
-    output      : 'images/img%t.jpg'
+    mode : "photo",
+	height : device[0].height,
+	width : device[0].width,
+	quality : device[0].quality,
+	timeout : device[0].timeout,
+    output      : 'images/img%d.jpg'
 	};
 	// start it up
 	var camera = new require("raspicam")(cameraOptions);
