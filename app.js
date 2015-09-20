@@ -1,10 +1,10 @@
 // this variable is set to 1 if it's running on the Pi
 // set it to 0 to run on another computer -> doesn't use pi-specific libraries
-var on_pi = 1;
+var on_pi = 0;
 
 // this variable is set to 1 to use ngrok
 // set it to 0 to only use localhost so we don't overtake the URL
-var use_ngrok = 1;
+var use_ngrok = 0;
 
 var express = require('express');
 var app = express(); //express module must be installed using NPM
