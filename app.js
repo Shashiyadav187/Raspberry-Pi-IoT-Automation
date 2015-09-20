@@ -125,7 +125,14 @@ for(var x = 1; x < device.length; x++){
 		var pinstate = pin[device[x].pin].readSync();
 		io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : device[x].highmsg, "val" : pinstate });
             } else {
-
+                //device[x].watch(function (err, value) {
+                    //if (value == 1){
+                        io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : "high"});
+                    //}
+                    //else if (value == 0){
+                    //    io.emit('inputUpdate', { "id" : x * 10 + 2, "msg" : "low"});
+                    //}
+                //});
             }
 	}
 
