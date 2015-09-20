@@ -404,12 +404,35 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Add an Event</h1>
-		<div class="list-group">
-		  <a id="if" onclick="active_item('if')" class="list-group-item active">Cras justo odio</a>
-		  <a id="if2" onclick="active_item('if2')" class="list-group-item">Dapibus ac facilisis in</a>
-		  <a id="if3" onclick="active_item('if3')" class="list-group-item">Morbi leo risus</a>
-		  <a id="if4" onclick="active_item('if4')" class="list-group-item">Porta ac consectetur ac</a>
-		  <a id="if5" onclick="active_item('if5')" class="list-group-item">Vestibulum at eros</a>
+		<div style="display:-webkit-box;">
+			<div class="col-xs-2 col-sm-2">
+				<div class="list-group">
+				  <a id="if" onclick="active_item('if', 'list1')" class="list1 list-group-item active">If</a>
+				</div>
+			</div>
+			<div class="col-xs-2 col-sm-2">
+				<div class="list-group">
+				  <a id="time" onclick="active_item('time', 'list2')" class="list2 list-group-item active">Time</a>
+				  <a id="gpio" onclick="active_item('gpio', 'list2')" class="list2 list-group-item">GPIO Event</a>
+				</div>
+			</div>
+			<div class="col-xs-2 col-sm-2">
+				<div class="list-group">
+				  <a id="then" onclick="active_item('then', 'list3')" class="list3 list-group-item active">Then</a>
+				</div>
+			</div>
+			<div class="col-xs-2 col-sm-2">
+				<div class="list-group">
+				  <a id="lamp" onclick="active_item('lamp', 'list4')" class="list4 list-group-item active">Lamp</a>
+				  <a id="buzzer" onclick="active_item('buzzer', 'list4')" class="list4 list-group-item">Buzzer</a>
+				</div>
+			</div>
+			<div class="col-xs-2 col-sm-2">
+				<div class="list-group">
+				  <a id="on" onclick="active_item('on', 'list5')" class="list5 list-group-item active">On</a>
+				  <a id="off" onclick="active_item('off', 'list5')" class="list5 list-group-item">Off</a>
+				</div>
+			</div>
 		</div>
       </div>
 

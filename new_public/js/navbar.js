@@ -38,9 +38,9 @@ function deleterow_onclick(e) {
 	});
 }
 
-function active_item(active_id) {
-	for(var i = 0; i < $('.list-group-item').length; i++) {
-		$('.list-group-item')[i].className = 'list-group-item';
+function active_item(active_id, list_class) {
+	for(var i = 0; i < $('.' + list_class).length; i++) {
+		$('.' + list_class)[i].className = list_class + ' list-group-item';
 	}
-	$('#' + active_id)[0].className = 'list-group-item active';
+	$('#' + active_id)[0].className = list_class + ' list-group-item active';
 }
