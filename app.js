@@ -185,7 +185,7 @@ function newEvent(data){
 	{
 		var deviceindex = Math.floor(data.op[x] / 10);
 		var devicestate = (data.op[x] - 2) % 10;
-		jobs[index].op[x] = device[deviceindex].id +" state: " + devicestate;
+		jobs[index].op[x] = device[deviceindex].name +" state: " + devicestate;
 	}
 	jobs[index].id = job_id;
 	io.emit('addEvent', jobs[index]);
