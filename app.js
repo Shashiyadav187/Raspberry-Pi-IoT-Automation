@@ -9,7 +9,7 @@ var usr_auth = require ('./private/auth.json');//creates an object with user nam
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
-var fss = require('fs');
+var fs = require('fs');
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
 
@@ -57,7 +57,11 @@ function post_auth (req, res) {
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
-	console.log(util.inspect(socket));
+	fs.writeFile("log.txt", util.inspect(socket), function(err) {
+		if(err) { return console.log(err); }
+		else {console.log("The file was saved!");}
+	}); 
+
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 1; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
@@ -148,6 +152,8 @@ if(device[0].camera == "true") {
 	});	
 	camera.start();
 }
+
+
 
 
 /* +++++++++ File Streaming ++++++++++++ */
