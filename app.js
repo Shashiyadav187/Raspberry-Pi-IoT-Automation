@@ -161,13 +161,18 @@ if(device[0].camera == "true") {
 			camera.stop();
 			console.log("picture taken at: " + util.inspect(timestamp));
 				// send image in email
-		var data = fs.readFileSync("./images/img0.jpg"); 
 		transporter.sendMail(
 		{       sender: 'raspberry.pi.iot.automation@gmail.com',
 				to:'ee.tinkerer@gmail.com',
 				subject:'Photo taken!',
 				body:'',
-				attachments : [{'filename': 'img0.jpg','contents':data}]
+				html: 'Embedded image: <img src="cid:unique@kreata.ee"/>',
+			attachments: [{
+				filename: 'img0.jpg',
+				path: './images/img0.jpg',
+				cid: 'unique@kreata.ee' //same cid value as in the html img src 
+			}]
+				
 		},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
 	});
 	
