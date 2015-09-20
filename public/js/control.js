@@ -7,6 +7,9 @@ socket.on('device', deviceobject);//global object
 function deviceobject(dev){
 	device = dev;
 }
+socket.on('log', function (now, string){
+	document.getElementById("textconsole").value += now + ": " + string + "\n";	
+});
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
@@ -237,7 +240,7 @@ function newEvent(){
 		{
 			if (chkbox.checked == true)
 			{
-				operations.push(parseInt(chkbox.id + 1));
+				operations.push(parseInt(chkbox.id) + 1);
 			}
 			else
 			{

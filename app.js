@@ -3,31 +3,28 @@ var app = express(); //express module must be installed using NPM
 var server = require('http').Server(app);
 var io = require('socket.io')(server);//create io object with an http/express server using socket.io module
 var path = require('path'); //built in path module, used to resolve paths of relative files
-var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
-var fs = require('filestream');
-var fss = require('fs');
-var RaspiCam = require("raspicam");
+var fs = require('fs');
 var util = require('util');
+var nodemailer = require('nodemailer');
 var jobs = [];//stores all the jobs that are currently active
+var email = require('./private/email.json');
+var ngrok_obj = require('./private/ngrok.json');
 
 //build server functionality
-server.listen(port);// note implement process.env.port
+server.listen(ngrok_obj.addr);// note implement process.env.port
+console.log("now listening on " + ngrok_obj.addr);
 app.get('/', auth);
 
-console.log("Now listening on port " + port); //write to the console which port is being used
+//console.log("Now listening on port " + port); //write to the console which port is being used
 
-ngrok.connect({
-    proto: 'http', // http|tcp|tls
-    addr: port, // port or network address
-    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com
-}, function (err, url) {
-	console.log("URL: " + url);
+ngrok.connect(ngrok_obj, function (err, url) {
 	if(err)	console.log("NGROK ERR: " + err);
+	else console.log("URL: " + url);
 });
 
 // Authenticator
@@ -54,22 +51,23 @@ function auth (req, res) {
 function post_auth (req, res) {
     res.sendFile(path.join(__dirname, '/public/control.html'));
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
+	app.use(express.static(path.join(__dirname + '/images')));//serves pictures
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	console.log("Login from: " + ip);
 }
 
-var spawn = require('child_process').spawn;
-var proc;
-
-app.use('/', express.static(path.join(__dirname, 'stream')));
-
-var sockets = {};
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport(email.login);
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+	writeConnLog("connect," + socket.handshake.headers['x-forwarded-for'] + ","
+		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language']);
+
+
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
-	for(var x = 0; x < device.length; x++){
+	for(var x = 1; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
 		if (device[x].state == "out"){
 			socket.emit('addOutput', { "name" : device[x].name, "id" : x, "val" : val }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
@@ -79,8 +77,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 		}
 	}
 
-    // for file streaming
-    sockets[socket.id] = socket;
 
 	//socket.emit('addEvent', {"job" : 123456, "date" : "Every Monday at 10:25AM", "op" : [ "PIR on", "Light on"]});
 	socket.on('setOutput', setOutput);
@@ -90,43 +86,18 @@ io.on('connection', function (socket) {//this function is run each time a client
 		socket.emit('addEvent', jobs[x]);
 	}
 
-    // for file streaming
-    socket.on('start-stream', function() {
-      startStreaming(io);
-    });
 
 	socket.on('disconnect', function(){
-	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+	writeConnLog("disconnect," + socket.handshake.headers['x-forwarded-for'] + ","
+		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language']);
 	});
 
-	socket.on('addLog', function() {
-		console.log('Socket resp from client addlog: \n' + util.inspect(socket));
-	});
-
-      // for file streaming
-      delete sockets[socket.id];
-
-      // no more sockets, kill the stream
-      if (Object.keys(sockets).length == 0) {
-        app.set('watchingFile', false);
-        if (proc) proc.kill();
-        fss.unwatchFile('./stream/image_stream.jpg');
-      }
-
-      // for file streaming
-      delete sockets[socket.id];
-
-      // no more sockets, kill the stream
-      if (Object.keys(sockets).length == 0) {
-        app.set('watchingFile', false);
-        if (proc) proc.kill();
-        fss.unwatchFile('./stream/image_stream.jpg');
-      }
 });
 
 //initialize devices
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
-for(var x = 0; x < device.length; x++){
+for(var x = 1; x < device.length; x++){
 	if (device[x].state == "in"){
 			pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
 		(function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
@@ -146,75 +117,38 @@ for(var x = 0; x < device.length; x++){
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
+//initialize camera if device file specifies "true"
+if(device[0].camera == "true") {
+	var cameraOptions = { // options for the camera from device.json
+    mode : "photo",
+	height : device[0].height,
+	width : device[0].width,
+	quality : device[0].quality,
+	timeout : device[0].timeout,
+    output      : 'images/img%d.jpg'
+	};
+	// start it up
+	var camera = new require("raspicam")(cameraOptions);
 
-/* +++++++++ Taking pictures ++++++++++++ */
-
-// where the images will be stored
-app.use(express.static(__dirname + '/images'));
-
- // options for the camera
-var cameraOptions = {
-    mode        : "photo",
-    output      : 'images/camera.jpg'
-};
-
-// start it up
-var camera = new require("raspicam")(cameraOptions);
-camera.start();
-
-// go to website/pic to see image
-app.get('/pic', function(req, res)
-{
-    res.sendFile(__dirname + '/images/camera.jpg');
-});
-
-// restart for timelapse -- so just close out
-camera.on("exit", function()
-{
-    camera.stop();
-    //console.log('Restarting camera...')
-    //camera.start()
-});
-
-/* +++++++++ File Streaming ++++++++++++ */
-
-function stopStreaming() {
-  if (Object.keys(sockets).length == 0) {
-    app.set('watchingFile', false);
-    if (proc) proc.kill();
-    fss.unwatchFile('./stream/image_stream.jpg');
-  }
+	// go to website/pic to see image
+	app.get('/pic', function(req, res)
+	{
+	res.sendFile(__dirname + './images/img0.jpg');
+	});
 }
-
-function startStreaming(io) {
-
-  if (app.get('watchingFile')) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-    return;
-  }
-
-  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100"];
-  proc = spawn('raspistill', args);
-
-  console.log('Watching for changes...');
-
-  app.set('watchingFile', true);
-
-  fss.watchFile('./stream/image_stream.jpg', function(current, previous) {
-    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-  })
-
-}
-
 
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
+	var csv;//stores comma separated name:state of devices in a string to write to log file and emit to UI
 		for(var z = 0; z < data.length; z++){
 			var x = Math.floor(data[z] / 10);//finds the device array index of the operation
-			var y = (data[z] % 10)-3;//finds the value to be written (which is 1 or zero and is stored in the ones place)
+			var y = (data[z] % 10)-2;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 			pin[device[x].pin].writeSync(y);
+			console.log(x);
 			io.emit('outdate', x, y);//output update, if anyone chnages the state of a light, all clients should see that change
-			console.log(device[x].name + " set to : " + y);
+			if (z == 0) csv = device[x].name + ":" + y + ",";
+			else if (z < (data.length - 1)) csv += device[x].name + ":" + y + ",";
+			else csv += device[x].name + ":" + y;
 		}
 	}
 	else{
@@ -223,7 +157,9 @@ function setOutput(data){
 		pin[device[x].pin].writeSync(y);
 		io.emit('outdate', x, y);//output update
 		console.log(device[x].name + " set to : " + y);
+		csv = device[x].name + ":" + y;
 	}
+	writeEventLog(csv);
 }
 function newEvent(data){
 	var index = jobs.length;
@@ -248,9 +184,10 @@ function newEvent(data){
 	}
 	for(var x = 0; x < data.op.length; x++)
 	{
-		var deviceindex = Math.floor((data.op[x] - 3) / 10);
-		var devicestate = (data.op[x] - 3) % 10;
-		jobs[index].op[x] = device[deviceindex].id +" state: " + devicestate;
+		var deviceindex = Math.floor(data.op[x] / 10);
+		var devicestate = (data.op[x] - 2) % 10;
+		console.log(deviceindex);
+		jobs[index].op[x] = device[deviceindex].name +" state: " + devicestate;
 	}
 	jobs[index].id = job_id;
 	io.emit('addEvent', jobs[index]);
@@ -269,14 +206,14 @@ function cancelEvent(data) {
 	console.log("Job ID " + data + " canceled");
 }
 
-function exitDevices() {//function unexports all Gpio objects
+function exitDevices() {//function unexports all Gpio objects, and kills ngrok
 
 	//kill ngrok
 	ngrok.disconnect(); // stops all
 	ngrok.kill(); // kills ngrok process
 
 	//move pins to main raspi thread
-	for (var x = 0; x < device.length; x++){
+	for (var x = 1; x < device.length; x++){
 		pin[device[x].pin].unexport();
 	}
 	console.log("all devices unexported");
@@ -302,3 +239,57 @@ process.on('cleanup', exitDevices);
     console.log(e.stack);
     process.exit(99);
   });
+  
+  
+function writeConnLog(string){//connections log file
+	var now = new Date();
+	fs.appendFile("connections.log", now + "," + string + '\n', function(err) {
+		if(err) { return console.log(err); }
+		else console.log("Connection Log: " + now + "," + string + '\n')
+	});
+}
+function writeEventLog(string){//event log file, and socket emit for text log on site
+	var now = new Date();
+	fs.appendFile("events.log", now + "," + string + '\n', function(err) {
+		if(err) {return console.log(err);}
+		else console.log("Event Log: " + now + "," + string + '\n');
+		console.log(string);//debug
+	});
+	io.emit('log', now, string);//emit log to all sockets so that their sites are up to date 
+}
+function picture(timestamp){//takes a picture
+	//camera events
+	var img_path;
+	camera.on('start', function(err, timestamp)
+	{
+		if(err != null) console.log(err);
+	});
+	camera.on('read', function(err, timestamp, path)
+	{
+		if(err != null) console.log(err);
+		img_path = path;
+	});
+	camera.on('exit', function(timestamp)
+	{
+		camera.stop();
+		return img_path;
+	});
+	camera.start();
+}
+function emailPicture(email){
+		transporter.sendMail(
+	{       sender: 'raspberry.pi.iot.automation@gmail.com',
+			to:email,
+			subject:'Photo taken!',
+			body:'',
+			html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
+		attachments: [{
+			filename: 'img0.jpg',
+			path: './images/img0.jpg',
+			cid: 'unique@kreata.ee' //same cid value as in the html img src
+		}]
+
+	},function(error, info){
+		if(error) console.log(error);
+	});
+}

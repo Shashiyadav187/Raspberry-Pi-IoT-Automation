@@ -1,0 +1,10 @@
+{
+	"login" : {
+		"service": "Gmail",
+		"auth" : {
+			"user" : "raspberry.pi.iot.automation@gmail.com",
+			"pass" : "raspiiotautomation"
+		}
+	},
+	"reciever" : "sn.bailey11@gmail.com, ee.tinkerer@gmail.com"
+}
