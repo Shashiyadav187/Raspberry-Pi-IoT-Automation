@@ -82,6 +82,9 @@ io.on('connection', function (socket) {//this function is run each time a client
 	socket.on('setOutput', setOutput);
 	socket.on('cancelEvent', cancelEvent);
 	socket.on('newEvent', newEvent);
+	socket.on('takepic', function(){
+		emailPicture(picture, "sn.bailey11@gmail.com");
+	};
 	for(var x=0; x < jobs.length; x++){
 		socket.emit('addEvent', jobs[x]);
 	}
@@ -257,7 +260,7 @@ function writeEventLog(string){//event log file, and socket emit for text log on
 	});
 	io.emit('log', now, string);//emit log to all sockets so that their sites are up to date 
 }
-function picture(timestamp){//takes a picture
+function picture(){//takes a picture
 	//camera events
 	var img_path;
 	camera.on('start', function(err, timestamp)
@@ -276,7 +279,7 @@ function picture(timestamp){//takes a picture
 	});
 	camera.start();
 }
-function emailPicture(email){
+function emailPicture(path, email){
 		transporter.sendMail(
 	{       sender: 'raspberry.pi.iot.automation@gmail.com',
 			to:email,
@@ -284,8 +287,8 @@ function emailPicture(email){
 			body:'',
 			html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
 		attachments: [{
-			filename: 'img0.jpg',
-			path: './images/img0.jpg',
+			filename: 'img.jpg',
+			path: path,
 			cid: 'unique@kreata.ee' //same cid value as in the html img src
 		}]
 

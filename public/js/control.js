@@ -215,7 +215,10 @@ socket.on('undrawEvent', undrawEvent);
 function undrawEvent(jobid){
 	document.getElementById(jobid).remove();
 }
-
+function takepic()
+{
+	socket.emit('takepic');	
+}
 function newEvent(){
 	var repeat; //stores integer 0-5 to represent the repetition type, respectively once, hourly, daily, weekly, monthly, yearly
 	var date;//will store that date object entered by user into datetime-locale element
