@@ -22,7 +22,6 @@ console.log("Now listening on port " + port); //write to the console which port 
 ngrok.connect({
     proto: 'http', // http|tcp|tls
     addr: port, // port or network address
-    auth: usr_auth.name + ':' + usr_auth.pass, // http basic authentication for tunnel
     authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com
 }, function (err, url) {
 	console.log("URL: " + url);
