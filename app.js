@@ -11,6 +11,7 @@ var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fs = require('filestream');
 var RaspiCam = require("raspicam");
+var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
