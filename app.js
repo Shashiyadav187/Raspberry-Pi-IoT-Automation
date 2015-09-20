@@ -50,6 +50,7 @@ function auth (req, res) {
 function post_auth (req, res) {
     res.sendFile(path.join(__dirname, '/public/control.html'));
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
+	app.use(express.static(path.join(__dirname + '/images')));//serves pictures
 	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
 	console.log("Login from: " + ip);
 }
@@ -59,13 +60,12 @@ var proc;
 
 app.use('/', express.static(path.join(__dirname, 'stream')));
 
-var sockets = {};
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
-	for(var x = 0; x < device.length; x++){
+	for(var x = 1; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
 		if (device[x].state == "out"){
 			socket.emit('addOutput', { "name" : device[x].name, "id" : x, "val" : val }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
@@ -89,34 +89,11 @@ io.on('connection', function (socket) {//this function is run each time a client
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	});
 
-	socket.on('addLog', function() {
-		console.log('Socket resp from client addlog: \n' + util.inspect(socket));
-	});
-
-      // for file streaming
-      delete sockets[socket.id];
-
-      // no more sockets, kill the stream
-      if (Object.keys(sockets).length == 0) {
-        app.set('watchingFile', false);
-        if (proc) proc.kill();
-        fss.unwatchFile('./stream/image_stream.jpg');
-      }
-
-      // for file streaming
-      delete sockets[socket.id];
-
-      // no more sockets, kill the stream
-      if (Object.keys(sockets).length == 0) {
-        app.set('watchingFile', false);
-        if (proc) proc.kill();
-        fss.unwatchFile('./stream/image_stream.jpg');
-      }
 });
 
 //initialize devices
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
-for(var x = 0; x < device.length; x++){
+for(var x = 1; x < device.length; x++){
 	if (device[x].state == "in"){
 			pin[device[x].pin] = new Gpio(device[x].pin, 'in', 'both');//create a key within the device[x] object that stores the GPIO object of the corresponding device
 		(function(index){//create a wrapper function so that the x value can be passed into the callback at the time the callback is initiated
@@ -138,9 +115,6 @@ for(var x = 0; x < device.length; x++){
 }
 
 /* +++++++++ Taking pictures ++++++++++++ */
-
-// where the images will be stored
-app.use(express.static(__dirname + '/images'));
 
  // options for the camera
 var cameraOptions = {
