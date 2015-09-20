@@ -12,24 +12,24 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
 	var tr = document.getElementById("div-output").appendChild(document.createElement("TR"));
 	tr.setAttribute("class", "output");
-	
+
 	var leftdiv = document.createElement("TD");
 		leftdiv.setAttribute("class", "label");
 		leftdiv.appendChild(document.createTextNode(data.name + ":"));
 	tr.appendChild(leftdiv);
-	
+
 	var rightdiv = document.createElement("TD");
 	rightdiv.setAttribute("class", "onoff-container");
-	
+
 	var onoffswitch1 = createOnOffSwitch(id, data.val, "setOutput(this.id, this.checked);");
 	rightdiv.appendChild(onoffswitch1);
 	tr.appendChild(rightdiv);
-	
+
 		//now write options for event scheduling
 	var eventdiv = document.getElementById("eventOptions").appendChild(document.createElement("TR"));
 	eventdiv.setAttribute("name", "event-schedule");
 	eventdiv.setAttribute("class", "output");
-	
+
 	var lefteventdiv = eventdiv.appendChild(document.createElement("TD"));
 	lefteventdiv.setAttribute("class", "label");
 	var eventcheck = document.createElement("input");
@@ -40,12 +40,12 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	var eventname = document.createTextNode(data.name + ": ");
 	lefteventdiv.appendChild(eventname);
 	lefteventdiv.appendChild(eventcheck);
-	
+
 	var mideventdiv = eventdiv.appendChild(document.createElement("TD"));
 	mideventdiv.setAttribute("class", "onoff-container event");
 	var onoffswitch2 = createOnOffSwitch(id+2, 0)
 	mideventdiv.appendChild(onoffswitch2);
-	
+
 	lefteventdiv.style.cursor = 'pointer';
 	lefteventdiv.onclick = function()
 	{
@@ -53,7 +53,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 		var check = this.children[0];
 		if(check.checked == true){check.checked = false;this.parentElement.setAttribute("class", "output");}
 		else{check.checked = true;this.parentElement.setAttribute("class", "output onclick-eventselect");}
-		
+
 	};
 	lefteventdiv.onmouseover = function()
 	{
@@ -65,6 +65,10 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 		var check = this.children[0];
 		if(check.checked != true) {this.parentElement.setAttribute("class", "output");}
 	};
+
+	// start streaming
+	socket.emit('start-stream');
+
 	/*(function(element) {
 		if( element.className == "onoff-container event")
 		{
@@ -151,14 +155,14 @@ function addInput(data){
 	if(data.val == 0)	{ div.setAttribute("class", "state state-low");}
 	else if(data.val == 1)	{ div.setAttribute("class", "state state-high");}//reflect current state of pin on GUI
 	else { div.setAttribute("class", "state"); }
-	
+
 	//var leftdiv = document.createElement("DIV");
 	//	leftdiv.setAttribute("class", "pure-u-1-2 left-div");
 	var d1 = document.createElement("DIV");
 	var name = document.createTextNode(data.name);
 	d1.appendChild(name);
 	div.appendChild(d1);
-	
+
 	var d2 = document.createElement("DIV");
 	var status = document.createTextNode("NULL");
 	d2.setAttribute("id", id);
@@ -176,12 +180,12 @@ function addEvent(data){
 	var div = document.getElementById("upcomingEvents").appendChild(document.createElement("DIV"));
 		div.setAttribute("id", data.id);//set name of the div element that will contain this event equal to the time, device, and operation so that it can easily be accessed
 		div.setAttribute("class", "pure-g");
-		
+
 	var leftdiv = document.createElement("DIV");
 		leftdiv.setAttribute("class", "pure-u-9-24");
 		leftdiv.appendChild(document.createTextNode(data.date));
 		div.appendChild(leftdiv);
-	
+
 	var middiv = document.createElement("DIV");
 		middiv.setAttribute("class", "pure-u-9-24");
 		for(var x = 0; x < data.op.length; x++){
@@ -189,7 +193,7 @@ function addEvent(data){
 			middiv.appendChild(document.createElement("BR"));
 		}
 		div.appendChild(middiv);
-		
+
 	var rightdiv = document.createElement("DIV");
 		rightdiv.setAttribute("class", "pure-u-6-24");
 	var removeButton = document.createElement("button");
@@ -202,7 +206,7 @@ function addEvent(data){
 		div.appendChild(rightdiv);
 }
 function cancelEvent(jobid){
-	socket.emit('cancelEvent', jobid);	
+	socket.emit('cancelEvent', jobid);
 }
 socket.on('undrawEvent', undrawEvent);
 function undrawEvent(jobid){
@@ -218,13 +222,13 @@ function newEvent(){
 		if(r == true){
 			repeat = x;
 		}}
-		
+
 	var datetime = document.getElementById("eventTimeDate").value;//get date time string from datetime-locale element
 		var datetimearray = datetime.split("T");//split the datetime string on the T
 		var datearr = datetimearray[0].split("-");//creates array of 3 value corresponding to year, month, hour respectively (Note month is returned 1 through 12, however the new Date object index the month at 0) therefore we must subtract 1
 		var time = datetimearray[1].split(":");//creates array of 2 values corresponding to hour and minute respectively
 	date = new Date(datearr[0], datearr[1] -1, datearr[2], time[0], time[1]);//create a date object
-	
+
 	var inputarr = document.getElementsByClassName("onoff-container event");//get all event switches
 	for(var x = 0; x < inputarr.length; x++){//find which events are selected for that date and time
 		var chkbox_select = inputarr[x].parentElement.children[0].children[0];

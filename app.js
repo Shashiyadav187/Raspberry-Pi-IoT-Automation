@@ -68,6 +68,10 @@ io.on('connection', function (socket) {//this function is run each time a client
 			socket.emit('addInput', { "name" : device[x].name, "id" : x, "val" : val });//tell server to draw the sensor on webpage'
 		}
 	}
+
+    // for file streaming
+    sockets[socket.id] = socket;
+
 	//socket.emit('addEvent', {"job" : 123456, "date" : "Every Monday at 10:25AM", "op" : [ "PIR on", "Light on"]});
 	socket.on('setOutput', setOutput);
 	socket.on('cancelEvent', cancelEvent);
@@ -75,13 +79,34 @@ io.on('connection', function (socket) {//this function is run each time a client
 	for(var x=0; x < jobs.length; x++){
 		socket.emit('addEvent', jobs[x]);
 	}
+
+    // for file streaming
+    socket.on('start-stream', function() {
+      startStreaming(io);
+    });
+
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+<<<<<<< HEAD
 	});
 	
 	socket.on('addLog', function() {
 		console.log('Socket resp from client addlog: \n' + util.inspect(socket));
 	});
+=======
+
+      // for file streaming
+      delete sockets[socket.id];
+
+      // no more sockets, kill the stream
+      if (Object.keys(sockets).length == 0) {
+        app.set('watchingFile', false);
+        if (proc) proc.kill();
+        fs.unwatchFile('./stream/image_stream.jpg');
+      }
+
+  });
+>>>>>>> live-streaming
 });
 
 //initialize devices
@@ -106,6 +131,8 @@ for(var x = 0; x < device.length; x++){
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
+
+/* +++++++++ Taking pictures ++++++++++++ */
 
 // where the images will be stored
 app.use(express.static(__dirname + '/images'));
@@ -133,6 +160,37 @@ camera.on("exit", function()
     //console.log('Restarting camera...')
     //camera.start()
 });
+
+/* +++++++++ File Streaming ++++++++++++ */
+
+function stopStreaming() {
+  if (Object.keys(sockets).length == 0) {
+    app.set('watchingFile', false);
+    if (proc) proc.kill();
+    fs.unwatchFile('./stream/image_stream.jpg');
+  }
+}
+
+function startStreaming(io) {
+
+  if (app.get('watchingFile')) {
+    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+    return;
+  }
+
+  var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100"];
+  proc = spawn('raspistill', args);
+
+  console.log('Watching for changes...');
+
+  app.set('watchingFile', true);
+
+  fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
+    io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+  })
+
+}
+
 
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
