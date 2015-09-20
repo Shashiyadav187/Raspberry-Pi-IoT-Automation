@@ -71,7 +71,12 @@ var transporter = nodemailer.createTransport({
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+	console.log("New Connection from IP: " + socket.handshake.headers['x-forwarded-for'] + "\t" + io.engine.clientsCount + " socket(s) connected");
+	console.log("time: " + socket.handshake.headers.time);
+	console.log("host: " + socket.handshake.headers.host);
+	console.log("browser: " + socket.handshake.headers['user-agent']);
+	console.log("language: " + socket.handshake.headers['accept-language']);
+	console.log("internal ip: " + socket.handshake.headers.address);
 	fs.writeFile("log.txt", util.inspect(socket), function(err) {
 		if(err) { return console.log(err); }
 		else {console.log("The file was saved!");}
