@@ -75,7 +75,7 @@ io.on('connection', function (socket) {//this function is run each time a client
 	fs.writeFile("log.txt", util.inspect(socket), function(err) {
 		if(err) { return console.log(err); }
 		else {console.log("The file was saved!");}
-	}); 
+	});
 
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 1; x < device.length; x++){
@@ -158,6 +158,17 @@ if(device[0].camera == "true") {
 		console.log(util.inspect(timestamp));
 		console.log(util.inspect(path));
 	});
+
+	// send image in email
+	fs.readFile("/img0.jpg", function (err, data) {
+	transporter.send_mail(
+	{       sender: 'raspberry.pi.iot.automation@gmail.com',
+	        to:'ee.tinkerer@gmail.com',
+	        subject:'Photo taken!',
+	        body:'',
+	        attachments : [{'filename': 'img0.jpg','contents':data}]
+	}),function(error, success){});
+
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
 	{
