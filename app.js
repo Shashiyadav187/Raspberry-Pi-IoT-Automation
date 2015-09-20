@@ -14,9 +14,13 @@ var path = require('path'); //built in path module, used to resolve paths of rel
 var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
+if (on_pi){
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+}
 var schedule = require('node-schedule');//npm installed scheduling module
+if (use_ngrok){
 var ngrok = require('ngrok');
+}
 var fss = require('fs');
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
@@ -26,7 +30,7 @@ server.listen(port);// note implement process.env.port
 app.get('/', auth);
 
 //console.log("Now listening on port " + port); //write to the console which port is being used
-
+if (use_ngrok){
 var ngrok_obj = require('./private/ngrok.json');
 ngrok.connect(ngrok_obj, function (err, url) {
 	if(err)	console.log("NGROK ERR: " + err);
@@ -75,7 +79,8 @@ io.on('connection', function (socket) {//this function is run each time a client
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 1; x < device.length; x++){
-		var val = pin[device[x].pin].readSync();
+		if (on_pi) {
+	        var val = pin[device[x].pin].readSync();
         } else {
             var val = x;
         }
@@ -103,7 +108,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 
 });
 
-if (on_pi == 1){
 //initialize devices
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 1; x < device.length; x++){
@@ -148,7 +152,7 @@ if(device[0].camera == "true") {
 	camera.stop();
 	//console.log('Restarting camera...')
 	//camera.start()
-	});	
+	});
 }
 
 
