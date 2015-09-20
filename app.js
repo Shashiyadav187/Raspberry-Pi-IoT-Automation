@@ -61,16 +61,13 @@ var transporter = nodemailer.createTransport(email.login);
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	console.log("New Connection from IP: " + socket.handshake.headers['x-forwarded-for'] + "\t" + io.engine.clientsCount + " socket(s) connected");
-	console.log("time: " + socket.handshake.headers.time);
-	console.log("host: " + socket.handshake.headers.host);
-	console.log("browser: " + socket.handshake.headers['user-agent']);
-	console.log("language: " + socket.handshake.headers['accept-language']);
-	console.log("internal ip: " + socket.handshake.headers.address);
-	fs.writeFile("log.txt", util.inspect(socket), function(err) {
-		if(err) { return console.log(err); }
-		else {console.log("The file was saved!");}
-	});
+	writeLog("New Connection from IP: " + socket.handshake.headers['x-forwarded-for'] + "\t" + io.engine.clientsCount + " socket(s) connected");
+	writeLog("time: " + socket.handshake.headers.time);
+	writeLog("host: " + socket.handshake.headers.host);
+	writeLog("browser: " + socket.handshake.headers['user-agent']);
+	writeLog("language: " + socket.handshake.headers['accept-language']);
+	writeLog("internal ip: " + socket.handshake.headers.address);
+
 
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 1; x < device.length; x++){
@@ -321,3 +318,11 @@ process.on('cleanup', exitDevices);
     console.log(e.stack);
     process.exit(99);
   });
+  
+  
+function writeLog(string){
+	var now = new Date();
+	fs.appendFile("log.txt", now + string, function(err) {
+		if(err) { return console.log(err); }
+	});
+}
