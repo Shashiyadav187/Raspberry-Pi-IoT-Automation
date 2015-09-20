@@ -288,7 +288,7 @@ function emailPicture(path, email){
 			html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
 		attachments: [{
 			filename: 'img.jpg',
-			path: path,
+			path: "./images/img0.jpg",
 			cid: 'unique@kreata.ee' //same cid value as in the html img src
 		}]
 
