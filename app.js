@@ -54,6 +54,8 @@ function auth (req, res) {
 function post_auth (req, res) {
     res.sendFile(path.join(__dirname, '/public/control.html'));
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
+	var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
+	console.log("Login from: " + ip);
 }
 
 var spawn = require('child_process').spawn;
@@ -63,8 +65,6 @@ var sockets = {};
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-//var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-var ip = client.handshake.headers['x-forwarded-for'] || client.handshake.address.address;
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 0; x < device.length; x++){
