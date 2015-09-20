@@ -1,3 +1,7 @@
+// this variable is set to 1 if it's running on the Pi
+// set it to 0 to run on another computer -> doesn't use pi-specific libraries
+var on_pi = 1;
+
 var express = require('express');
 var app = express(); //express module must be installed using NPM
 var server = require('http').Server(app);
@@ -6,12 +10,15 @@ var path = require('path'); //built in path module, used to resolve paths of rel
 var port = 3700; //stores port number to listen on
 var device = require('./private/device.json');//imports device object
 var usr_auth = require ('./private/auth.json');//creates an object with user name and pass and
-var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+// pi specific libraries
+if (on_pi == 1){
+    var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
+    var fss = require('fs');
+    var RaspiCam = require("raspicam");
+}
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fs = require('filestream');
-var fss = require('fs');
-var RaspiCam = require("raspicam");
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
 
@@ -65,11 +72,12 @@ app.use('/', express.static(path.join(__dirname, 'stream')));
 
 var sockets = {};
 
+if (on_pi == 1){
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
-	for(var x = 0; x < device.length; x++){
+    for(var x = 0; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
 		if (device[x].state == "out"){
 			socket.emit('addOutput', { "name" : device[x].name, "id" : x, "val" : val }); //on receipt the browser will multiply the id by 10 (and add 1 or zero for on/ off), on buttonclick the id will be sent back we can use integer division to get the device index, and modulus to get the state
@@ -123,7 +131,9 @@ io.on('connection', function (socket) {//this function is run each time a client
         fss.unwatchFile('./stream/image_stream.jpg');
       }
 });
+}
 
+if (on_pi == 1){
 //initialize devices
 var pin = [];//array stores the GPIO module objects, the index corresponds to the gpio pin on the pi that the device is connected to (there are 26 GPIO's on pi, but the highest GPIO pin is 27)
 for(var x = 0; x < device.length; x++){
@@ -205,7 +215,7 @@ function startStreaming(io) {
   })
 
 }
-
+}
 
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
@@ -275,10 +285,12 @@ function exitDevices() {//function unexports all Gpio objects
 	ngrok.disconnect(); // stops all
 	ngrok.kill(); // kills ngrok process
 
+    if (on_pi == 1){
 	//move pins to main raspi thread
 	for (var x = 0; x < device.length; x++){
 		pin[device[x].pin].unexport();
 	}
+    }
 	console.log("all devices unexported");
 	server.close();
 	console.log("Server closed");
