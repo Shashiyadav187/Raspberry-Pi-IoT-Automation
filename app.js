@@ -64,7 +64,7 @@ var sockets = {};
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 //var ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-var ip = socket.client.handshake.headers['x-forwarded-for'] || socket.client.handshake.address.address;
+var ip = client.handshake.headers['x-forwarded-for'] || client.handshake.address.address;
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 0; x < device.length; x++){
