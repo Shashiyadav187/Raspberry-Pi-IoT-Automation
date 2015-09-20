@@ -168,16 +168,16 @@ if(device[0].camera == "true") {
 				to:'ee.tinkerer@gmail.com',
 				subject:'Photo taken!',
 				body:'',
-				html: 'Embedded image: <img src="cid:unique@kreata.ee"/>',
+				html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
 			attachments: [{
 				filename: 'img0.jpg',
 				path: './images/img0.jpg',
-				cid: 'unique@kreata.ee' //same cid value as in the html img src 
+				cid: 'unique@kreata.ee' //same cid value as in the html img src
 			}]
-				
+
 		},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
 	});
-	
+
 	camera.start();
 }
 
