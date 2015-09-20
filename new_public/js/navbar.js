@@ -37,3 +37,10 @@ function deleterow_onclick(e) {
 		$(e).remove();
 	});
 }
+
+function active_item(active_id) {
+	for(var i = 0; i < $('.list-group-item').length; i++) {
+		$('.list-group-item')[i].className = 'list-group-item';
+	}
+	$('#' + active_id)[0].className = 'list-group-item active';
+}

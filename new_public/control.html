@@ -404,10 +404,13 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Add an Event</h1>
-        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
-        <p>
-          <a class="btn btn-lg btn-primary" href="http://getbootstrap.com/components/#navbar" role="button">View navbar docs »</a>
-        </p>
+		<div class="list-group">
+		  <a id="if" onclick="active_item('if')" class="list-group-item active">Cras justo odio</a>
+		  <a id="if2" onclick="active_item('if2')" class="list-group-item">Dapibus ac facilisis in</a>
+		  <a id="if3" onclick="active_item('if3')" class="list-group-item">Morbi leo risus</a>
+		  <a id="if4" onclick="active_item('if4')" class="list-group-item">Porta ac consectetur ac</a>
+		  <a id="if5" onclick="active_item('if5')" class="list-group-item">Vestibulum at eros</a>
+		</div>
       </div>
 
     </div> <!-- /container -->
@@ -459,11 +462,10 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/navbar.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./js/ie10-viewport-bug-workaround.js"></script>
-    <!-- Regular JS -->
-    <script src="./js/navbar.js"></script>
 	<!-- Switches -->
     <script src="./js/bootstrap-switch.js"></script>
     <script>
