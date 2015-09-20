@@ -147,7 +147,7 @@ if(device[0].camera == "true") {
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
 	{
-		console.log("exit"):
+		console.log("exit");
 		camera.stop();
 		console.log("picture taken at: " + util.inspect(timestamp));
 	});	
