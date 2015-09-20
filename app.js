@@ -16,6 +16,7 @@ var email = require('./private/email.json');
 
 //build server functionality
 server.listen(ngrok.addr);// note implement process.env.port
+console.log"(now listening on " + ngrok.addr);
 app.get('/', auth);
 
 //console.log("Now listening on port " + port); //write to the console which port is being used
