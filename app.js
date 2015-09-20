@@ -183,8 +183,8 @@ function newEvent(data){
 	}
 	for(var x = 0; x < data.op.length; x++)
 	{
-		var deviceindex = Math.floor((data.op[x] - 3) / 10);
-		var devicestate = (data.op[x] - 3) % 10;
+		var deviceindex = Math.floor((data.op[x] - 2) / 10);
+		var devicestate = (data.op[x] - 2) % 10;
 		jobs[index].op[x] = device[deviceindex].id +" state: " + devicestate;
 	}
 	jobs[index].id = job_id;
