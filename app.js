@@ -168,7 +168,7 @@ if(device[0].camera == "true") {
 				subject:'Photo taken!',
 				body:'',
 				attachments : [{'filename': 'img0.jpg','contents':data}]
-		},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));)});
+		},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
 	});
 	
 	camera.start();
