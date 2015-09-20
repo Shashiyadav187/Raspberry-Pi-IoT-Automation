@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://getbootstrap.com/examples/navbar/# -->
+<html lang="en"><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+   <!--  <link rel="icon" href="http://getbootstrap.com/favicon.ico"> -->
+
+    <title>Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+	
+    <!-- Bootstrap switch -->
+    <link href="./css/bootstrap-switch.css" rel="stylesheet">
+	
+	<!-- Bootstrap DataTable -->
+    <link href="./css/dataTables.bootstrap.min.css" rel="stylesheet">
+	
+    <!-- Custom styles for this template -->
+    <link href="./css/navbar.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="./js/ie-emulation-modes-warning.js"></script><style type="text/css"></style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+	<!--
+	DEVICES PAGE
+	============
+	-->
+    <div class="container" id="devices_page">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Raspi Home Automation</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav">
+              <li class="active"><a>Devices</a></li>
+              <li onclick="switchPage('devices_page','data_page');"><a>Data</a></li>
+              <li onclick="switchPage('devices_page','upcomming_events_page');"><a>Upcomming Events</a></li>
+              <li onclick="switchPage('devices_page','add_event_page');"><a>Add Event</a></li>
+              <li class="camera_li" onclick="switchPage('devices_page','pics_page');"><a>Camera</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Devices</h1>
+		<div style="margin:20px" ><input type="checkbox" checked><p>Lamp 1</p></div>
+		<div style="margin:20px" ><input type="checkbox" checked><p>Lamp 2</p></div>
+		<a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-success">Button ON</a><br/>
+        <a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-danger">Button OFF</a><br/>
+      </div>
+
+    </div> <!-- /container -->
+	
+	<!--
+	DATA PAGE
+	=========
+	-->
+    <div class="container" id="data_page" style="display:none;"> 
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Raspi Home Automation</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav">
+              <li onclick="switchPage('data_page','devices_page');"><a>Devices</a></li>
+              <li class="active"><a>Data</a></li>
+              <li onclick="switchPage('data_page','upcomming_events_page');"><a>Upcomming Events</a></li>
+              <li onclick="switchPage('data_page','add_event_page');"><a>Add Event</a></li>
+              <li class="camera_li" onclick="switchPage('data_page','pics_page');"><a>Camera</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Sensor Data</h1>
+	<table id="sensor_data_tbl" class="datatable table table-striped table-bordered" cellspacing="0" width="100%">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Position</th>
+					<th>Office</th>
+					<th>Age</th>
+					<th>Start date</th>
+					<th>Salary</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+	 
+			<tfoot>
+				<tr>
+					<th>Name</th>
+					<th>Position</th>
+					<th>Office</th>
+					<th>Age</th>
+					<th>Start date</th>
+					<th>Salary</th>
+					<th>Delete</th>
+				</tr>
+			</tfoot>
+	 
+			<tbody>
+				<tr>
+					<td>Tiger Nixon</td>
+					<td>System Architect</td>
+					<td>Edinburgh</td>
+					<td>61</td>
+					<td>2011/04/25</td>
+					<td>$320,800</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Garrett Winters</td>
+					<td>Accountant</td>
+					<td>Tokyo</td>
+					<td>63</td>
+					<td>2011/07/25</td>
+					<td>$170,750</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Ashton Cox</td>
+					<td>Junior Technical Author</td>
+					<td>San Francisco</td>
+					<td>66</td>
+					<td>2009/01/12</td>
+					<td>$86,000</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Cedric Kelly</td>
+					<td>Senior Javascript Developer</td>
+					<td>Edinburgh</td>
+					<td>22</td>
+					<td>2012/03/29</td>
+					<td>$433,060</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Airi Satou</td>
+					<td>Accountant</td>
+					<td>Tokyo</td>
+					<td>33</td>
+					<td>2008/11/28</td>
+					<td>$162,700</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Brielle Williamson</td>
+					<td>Integration Specialist</td>
+					<td>New York</td>
+					<td>61</td>
+					<td>2012/12/02</td>
+					<td>$372,000</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Herrod Chandler</td>
+					<td>Sales Assistant</td>
+					<td>San Francisco</td>
+					<td>59</td>
+					<td>2012/08/06</td>
+					<td>$137,500</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Rhona Davidson</td>
+					<td>Integration Specialist</td>
+					<td>Tokyo</td>
+					<td>55</td>
+					<td>2010/10/14</td>
+					<td>$327,900</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Colleen Hurst</td>
+					<td>Javascript Developer</td>
+					<td>San Francisco</td>
+					<td>39</td>
+					<td>2009/09/15</td>
+					<td>$205,500</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+			</tbody>
+		</table>
+      </div>
+
+    </div> <!-- /container -->
+	
+	
+	<!--
+	UPCOMMING EVENTS PAGE
+	=====================
+	-->
+    <div class="container" id="upcomming_events_page" style="display:none;"> 
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Raspi Home Automation</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav">
+              <li onclick="switchPage('upcomming_events_page','devices_page');"><a>Devices</a></li>
+              <li onclick="switchPage('upcomming_events_page','data_page');"><a>Data</a></li>
+              <li class="active" ><a>Upcomming Events</a></li>
+              <li onclick="switchPage('upcomming_events_page','add_event_page');"><a>Add Event</a></li>
+              <li class="camera_li" onclick="switchPage('upcomming_events_page','pics_page');"><a>Camera</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Upcomming Events</h1>
+	<table id="upcomming_events_tbl" class="datatable table table-striped table-bordered" cellspacing="0" width="100%">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Position</th>
+					<th>Office</th>
+					<th>Age</th>
+					<th>Start date</th>
+					<th>Salary</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+	 
+			<tfoot>
+				<tr>
+					<th>Name</th>
+					<th>Position</th>
+					<th>Office</th>
+					<th>Age</th>
+					<th>Start date</th>
+					<th>Salary</th>
+					<th>Delete</th>
+				</tr>
+			</tfoot>
+	 
+			<tbody>
+				<tr>
+					<td>Tiger Nixon</td>
+					<td>System Architect</td>
+					<td>Edinburgh</td>
+					<td>61</td>
+					<td>2011/04/25</td>
+					<td>$320,800</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Garrett Winters</td>
+					<td>Accountant</td>
+					<td>Tokyo</td>
+					<td>63</td>
+					<td>2011/07/25</td>
+					<td>$170,750</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Ashton Cox</td>
+					<td>Junior Technical Author</td>
+					<td>San Francisco</td>
+					<td>66</td>
+					<td>2009/01/12</td>
+					<td>$86,000</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Cedric Kelly</td>
+					<td>Senior Javascript Developer</td>
+					<td>Edinburgh</td>
+					<td>22</td>
+					<td>2012/03/29</td>
+					<td>$433,060</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Airi Satou</td>
+					<td>Accountant</td>
+					<td>Tokyo</td>
+					<td>33</td>
+					<td>2008/11/28</td>
+					<td>$162,700</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Brielle Williamson</td>
+					<td>Integration Specialist</td>
+					<td>New York</td>
+					<td>61</td>
+					<td>2012/12/02</td>
+					<td>$372,000</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Herrod Chandler</td>
+					<td>Sales Assistant</td>
+					<td>San Francisco</td>
+					<td>59</td>
+					<td>2012/08/06</td>
+					<td>$137,500</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Rhona Davidson</td>
+					<td>Integration Specialist</td>
+					<td>Tokyo</td>
+					<td>55</td>
+					<td>2010/10/14</td>
+					<td>$327,900</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+				<tr>
+					<td>Colleen Hurst</td>
+					<td>Javascript Developer</td>
+					<td>San Francisco</td>
+					<td>39</td>
+					<td>2009/09/15</td>
+					<td>$205,500</td>
+					<td class='deleterow'><div class='glyphicon glyphicon-remove'></div></td>
+				</tr>
+			</tbody>
+		</table>
+      </div>
+
+    </div> <!-- /container -->
+	
+	
+	<!--
+	ADD EVENT PAGE
+	==============
+	-->
+    <div class="container" id="add_event_page" style="display:none;"> 
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Raspi Home Automation</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav">
+              <li onclick="switchPage('add_event_page','devices_page');"><a>Devices</a></li>
+              <li onclick="switchPage('add_event_page','data_page');"><a>Data</a></li>
+              <li onclick="switchPage('add_event_page','upcomming_events_page');"><a>Upcomming Events</a></li>
+              <li class="active" ><a>Add Event</a></li>
+              <li class="camera_li" onclick="switchPage('add_event_page','pics_page');"><a>Camera</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Add an Event</h1>
+        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="http://getbootstrap.com/components/#navbar" role="button">View navbar docs »</a>
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+	
+	
+	<!--
+	RECENT PICS PAGE
+	================
+	-->
+    <div class="container" id="pics_page" style="display:none;"> 
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Raspi Home Automation</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav">
+              <li onclick="switchPage('pics_page','devices_page');"><a>Devices</a></li>
+              <li onclick="switchPage('pics_page','data_page');"><a>Data</a></li>
+              <li onclick="switchPage('pics_page','upcomming_events_page');"><a>Upcomming Events</a></li>
+              <li onclick="switchPage('pics_page','add_event_page');"><a>Add Event</a></li>
+              <li class="camera_li active"><a>Camera</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Recent Pictures</h1>
+        <p>This example is a quick exercise to illustrate how the default, static navbar and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="http://getbootstrap.com/components/#navbar" role="button">View navbar docs »</a>
+        </p>
+      </div>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Regular JS -->
+    <script src="./js/navbar.js"></script>
+	<!-- Switches -->
+    <script src="./js/bootstrap-switch.js"></script>
+    <script>
+    $(function(argument) {
+      $('[type="checkbox"]').bootstrapSwitch();
+    })
+	</script>
+	<!-- Data Table -->
+    <script src="./js/jquery.dataTables.min.js"></script>
+    <script src="./js/dataTables.bootstrap.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		$('.datatable').DataTable();
+		if(show_camera_page) {
+			$('.camera_li').css('display','block');
+		} else {
+			$('.camera_li').css('display','none');
+		}
+		addToTbl('sensor_data_tbl',['asdf','asdf','asdf','asdf','asdf','asdf'])
+	} );
+	</script>
+
+</body></html>
