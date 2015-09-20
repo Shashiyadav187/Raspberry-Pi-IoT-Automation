@@ -136,21 +136,22 @@ if(device[0].camera == "true") {
 	// go to website/pic to see image
 	app.get('/pic', function(req, res)
 	{
-	res.sendFile(__dirname + '/img0.jpg');
+	res.sendFile(__dirname + './images/img0.jpg');
 	});
 	//camera events
 	camera.on('start', function(err, timestamp)
 	{
 		console.log("start");
-		if(err == null) console.log("dope");
-		console.log(util.inspect(timestamp));
+		if(err != null) console.log(err);
+		//console.log(util.inspect(timestamp));
 	});
 	camera.on('read', function(err, timestamp, path)
 	{
 		console.log("read");
-		console.log(util.inspect(err));
-		console.log(util.inspect(timestamp));
-		console.log(util.inspect(path));
+		if(err != null) console.log(err);
+		//console.log(util.inspect(err));
+		//console.log(util.inspect(timestamp));
+		//console.log(util.inspect(path));
 	});
 
 
@@ -181,6 +182,7 @@ if(device[0].camera == "true") {
 
 
 // send mail with defined transport object
+/*
 transporter.sendMail(email.message, function(error, info){
     if(error){
         console.log(error);
@@ -188,7 +190,7 @@ transporter.sendMail(email.message, function(error, info){
         console.log('Message sent: ' + info.response);
     }
 });
-
+*/
 
 
 /* +++++++++ File Streaming ++++++++++++ */
