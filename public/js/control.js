@@ -7,6 +7,10 @@ socket.on('device', deviceobject);//global object
 function deviceobject(dev){
 	device = dev;
 }
+socket.on('log', function (now, string){
+	var log = document.getElementById("textconsole").value
+	log += now + ": " + string + "\n";	
+});
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
 	var id = data.id * 10;
