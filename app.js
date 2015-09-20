@@ -11,6 +11,7 @@ var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fss = require('fs');
 var util = require('util');
+var nodemailer = require('nodemailer');
 var jobs = [];//stores all the jobs that are currently active
 
 //build server functionality
@@ -59,6 +60,14 @@ var proc;
 
 app.use('/', express.static(path.join(__dirname, 'stream')));
 
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'raspberry.pi.iot.automation@gmail.com',
+        pass: 'raspiiotautomation'
+    }
+});
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
@@ -136,24 +145,41 @@ if(device[0].camera == "true") {
 		console.log("start");
 		if(err == null) console.log("dope");
 		console.log(util.inspect(timestamp));
-	});	
+	});
 	camera.on('read', function(err, timestamp, path)
 	{
 		console.log("read");
 		console.log(util.inspect(err));
 		console.log(util.inspect(timestamp));
 		console.log(util.inspect(path));
-	});	
+	});
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
 	{
 		console.log("exit");
 		camera.stop();
 		console.log("picture taken at: " + util.inspect(timestamp));
-	});	
+	});
 	camera.start();
 }
 
+// setup e-mail data with unicode symbols
+var mailOptions = {
+    from: 'Raspberry Pi <raspberry.pi.iot.automation@gmail.com>', // sender address
+    to: 'ee.tinkerer@gmail.com', // list of receivers
+    subject: 'Hello', // Subject line
+    text: 'Hello world ✔', // plaintext body
+    html: '<b>Hello world ✔</b>' // html body
+};
+
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+    }else{
+        console.log('Message sent: ' + info.response);
+    }
+});
 
 /* +++++++++ File Streaming ++++++++++++ */
 /*
