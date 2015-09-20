@@ -281,7 +281,7 @@ function picture(){//takes a picture
 	});
 	camera.start();
 }
-function emailPicture(path, email){
+function emailPicture(email){
 		transporter.sendMail(
 	{       sender: 'raspberry.pi.iot.automation@gmail.com',
 			to:email,
