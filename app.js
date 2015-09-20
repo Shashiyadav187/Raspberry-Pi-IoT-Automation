@@ -180,7 +180,7 @@ if(device[0].camera == "true") {
 
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
-	var csv = "";//stores comma separated name:state of devices in a string to write to log file and emit to UI
+	var csv;//stores comma separated name:state of devices in a string to write to log file and emit to UI
 		for(var z = 0; z < data.length; z++){
 			var x = Math.floor(data[z] / 10);//finds the device array index of the operation
 			var y = (data[z] % 10)-3;//finds the value to be written (which is 1 or zero and is stored in the ones place)
@@ -196,7 +196,7 @@ function setOutput(data){
 		pin[device[x].pin].writeSync(y);
 		io.emit('outdate', x, y);//output update
 		console.log(device[x].name + " set to : " + y);
-		csv += device[x].name + ":" + y;
+		csv = device[x].name + ":" + y;
 	}
 	writeEventLog(csv);
 }
