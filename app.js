@@ -9,7 +9,6 @@ var usr_auth = require ('./private/auth.json');//creates an object with user nam
 var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, must be installed with npm
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
-var fs = require('filestream');
 var fss = require('fs');
 var RaspiCam = require("raspicam");
 var util = require('util');
@@ -19,15 +18,12 @@ var jobs = [];//stores all the jobs that are currently active
 server.listen(port);// note implement process.env.port
 app.get('/', auth);
 
-console.log("Now listening on port " + port); //write to the console which port is being used
+//console.log("Now listening on port " + port); //write to the console which port is being used
 
-ngrok.connect({
-    proto: 'http', // http|tcp|tls
-    addr: port, // port or network address
-    authtoken: '25EXQ1aRd7bPCojUdYSzx_FAFBqjmJ5BhmsMLZtVVM' // your authtoken from ngrok.com
-}, function (err, url) {
-	console.log("URL: " + url);
+var ngrok_obj = require('./private/ngrok.json');
+ngrok.connect(ngrok_obj, function (err, url) {
 	if(err)	console.log("NGROK ERR: " + err);
+	else console.log("URL: " + url);
 });
 
 // Authenticator
@@ -79,8 +75,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 		}
 	}
 
-    // for file streaming
-    sockets[socket.id] = socket;
 
 	//socket.emit('addEvent', {"job" : 123456, "date" : "Every Monday at 10:25AM", "op" : [ "PIR on", "Light on"]});
 	socket.on('setOutput', setOutput);
@@ -90,10 +84,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 		socket.emit('addEvent', jobs[x]);
 	}
 
-    // for file streaming
-    socket.on('start-stream', function() {
-      startStreaming(io);
-    });
 
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
