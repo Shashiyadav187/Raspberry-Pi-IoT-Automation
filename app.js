@@ -186,8 +186,9 @@ function setOutput(data){
 			var y = (data[z] % 10)-3;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 			pin[device[x].pin].writeSync(y);
 			io.emit('outdate', x, y);//output update, if anyone chnages the state of a light, all clients should see that change
-			csv += device[x].name + ":" + y;
-			if (z < (data.length - 1)) csv + ",";
+			if (z == 0) csv = device[x].name + ":" + y + ",";
+			else if (z < (data.length - 1)) csv += device[x].name + ":" + y + ",";
+			else csv += device[x].name + ":" + y;
 		}
 	}
 	else{
