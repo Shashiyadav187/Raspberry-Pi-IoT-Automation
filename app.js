@@ -116,6 +116,9 @@ for(var x = 1; x < device.length; x++){
 if(device[0].camera == "true") {
 	var cameraOptions = { // options for the camera from device.json
     mode        : "photo",
+	height : 480,
+	width : 640,
+	quality : 75,
     output      : 'images/img%d.jpg'
 	};
 	// start it up
@@ -125,7 +128,7 @@ if(device[0].camera == "true") {
 	// go to website/pic to see image
 	app.get('/pic', function(req, res)
 	{
-	res.sendFile(__dirname + '/images/camera.jpg');
+	res.sendFile(__dirname + '/img.jpg');
 	});
 
 	// restart for timelapse -- so just close out
