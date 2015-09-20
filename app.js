@@ -79,7 +79,7 @@ io.on('connection', function (socket) {//this function is run each time a client
 	});
 	
 	socket.on('addLog', function() {
-		console.log('Socket resp from client addlog: \n' + JSON.stringify(socket));
+		console.log('Socket resp from client addlog: \n' + util.inspect(socket));
 	});
 });
 
