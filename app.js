@@ -112,8 +112,6 @@ io.on('connection', function (socket) {//this function is run each time a client
         if (proc) proc.kill();
         fs.unwatchFile('./stream/image_stream.jpg');
       }
-
-  });
 });
 
 //initialize devices
