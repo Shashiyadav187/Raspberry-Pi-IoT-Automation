@@ -63,8 +63,7 @@ var transporter = nodemailer.createTransport(email.login);
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	writeConnLog("connect," + socket.handshake.headers['x-forwarded-for'] + ","
 		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
-		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language'] + ","
-		+ socket.handshake.headers['accept-language'] + "," + socket.handshake.headers.address);
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language']);
 
 
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
@@ -196,6 +195,7 @@ function setOutput(data){
 		io.emit('outdate', x, y);//output update
 		console.log(device[x].name + " set to : " + y);
 	}
+	writeEventLog(
 }
 function newEvent(data){
 	var index = jobs.length;
