@@ -232,14 +232,14 @@ function cancelEvent(data) {
 	console.log("Job ID " + data + " canceled");
 }
 
-function exitDevices() {//function unexports all Gpio objects
+function exitDevices() {//function unexports all Gpio objects, and kills ngrok
 
 	//kill ngrok
 	ngrok.disconnect(); // stops all
 	ngrok.kill(); // kills ngrok process
 
 	//move pins to main raspi thread
-	for (var x = 0; x < device.length; x++){
+	for (var x = 1; x < device.length; x++){
 		pin[device[x].pin].unexport();
 	}
 	console.log("all devices unexported");
