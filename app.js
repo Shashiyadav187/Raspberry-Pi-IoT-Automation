@@ -78,12 +78,6 @@ io.on('connection', function (socket) {//this function is run each time a client
 	socket.on('disconnect', function(){
 	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
 
-
-	//write log for callback
-	socket.on('addLog', function(socket) {
-		console.log("Writing log from: " + socket.request.connection.ip);
-		fs.appendFile('./log.txt', socket.request.connection.datetime + "," + socket.request.connection.devicename + "," + socket.request.connection.deviceid + "," + socket.request.connection.val + "," + socket.request.connection.ip + "\n", function (err) {console.log("Err writing log")});
-	});
   });
 });
 
