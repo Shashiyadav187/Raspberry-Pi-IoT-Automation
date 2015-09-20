@@ -55,6 +55,7 @@ function post_auth (req, res) {
 	console.log("Login from: " + ip);
 }
 
+<<<<<<< HEAD
 var spawn = require('child_process').spawn;
 var proc;
 
@@ -69,6 +70,8 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+=======
+>>>>>>> master
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
