@@ -191,9 +191,11 @@ function addEvent(data){
 
 	var middiv = document.createElement("DIV");
 		middiv.setAttribute("class", "pure-u-9-24");
+		
 		for(var x = 0; x < data.op.length; x++){
 			middiv.appendChild(document.createTextNode(data.op[x]));
 			middiv.appendChild(document.createElement("BR"));
+			console.log(data.op[x]);
 		}
 		div.appendChild(middiv);
 
