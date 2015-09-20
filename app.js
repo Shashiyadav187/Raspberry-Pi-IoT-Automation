@@ -133,11 +133,13 @@ if(device[0].camera == "true") {
 	//camera events
 	camera.on('start', function(err, timestamp)
 	{
+		console.log("start");
 		if(err == null) console.log("dope");
 		console.log(util.inspect(timestamp));
 	});	
 	camera.on('read', function(err, timestamp, path)
 	{
+		console.log("read");
 		console.log(util.inspect(err));
 		console.log(util.inspect(timestamp));
 		console.log(util.inspect(path));
@@ -145,8 +147,9 @@ if(device[0].camera == "true") {
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
 	{
-	camera.stop();
-	console.log("picture taken at: " + util.inspect(timestamp));
+		console.log("exit"):
+		camera.stop();
+		console.log("picture taken at: " + util.inspect(timestamp));
 	});	
 }
 
