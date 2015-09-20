@@ -10,7 +10,6 @@ var Gpio = require('onoff').Gpio; //module allows Node to control gpio pins, mus
 var schedule = require('node-schedule');//npm installed scheduling module
 var ngrok = require('ngrok');
 var fss = require('fs');
-var RaspiCam = require("raspicam");
 var util = require('util');
 var jobs = [];//stores all the jobs that are currently active
 
@@ -117,7 +116,7 @@ for(var x = 1; x < device.length; x++){
 if(device[0].camera == "true") {
 	var cameraOptions = { // options for the camera from device.json
     mode        : "photo",
-    output      : 'images/camera.jpg'
+    output      : 'images/img%d.jpg'
 	};
 	// start it up
 	var camera = new require("raspicam")(cameraOptions);
