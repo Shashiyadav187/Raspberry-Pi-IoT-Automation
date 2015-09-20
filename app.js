@@ -54,15 +54,10 @@ function post_auth (req, res) {
 	console.log("Login from: " + ip);
 }
 
-var spawn = require('child_process').spawn;
-var proc;
-
-app.use('/', express.static(path.join(__dirname, 'stream')));
-
-
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
 	console.log("New Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+	console.log(util.inspect(socket));
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
 	for(var x = 1; x < device.length; x++){
 		var val = pin[device[x].pin].readSync();
