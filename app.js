@@ -61,6 +61,8 @@ function post_auth (req, res) {
 var spawn = require('child_process').spawn;
 var proc;
 
+app.use('/', express.static(path.join(__dirname, 'stream')));
+
 var sockets = {};
 
 //build websocket functionality
