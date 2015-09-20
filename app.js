@@ -88,10 +88,9 @@ io.on('connection', function (socket) {//this function is run each time a client
 
 
 	socket.on('disconnect', function(){
-	  writeConnLog("disconnect," + socket.handshake.headers['x-forwarded-for'] + ","
+	writeConnLog("disconnect," + socket.handshake.headers['x-forwarded-for'] + ","
 		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
-		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language'] + ","
-		+ socket.handshake.headers['accept-language'] + "," + socket.handshake.headers.address);
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language']);
 	});
 
 });
@@ -136,46 +135,6 @@ if(device[0].camera == "true") {
 	{
 	res.sendFile(__dirname + './images/img0.jpg');
 	});
-	//camera events
-	camera.on('start', function(err, timestamp)
-	{
-		console.log("start");
-		if(err != null) console.log(err);
-		//console.log(util.inspect(timestamp));
-	});
-	camera.on('read', function(err, timestamp, path)
-	{
-		console.log("read");
-		if(err != null) console.log(err);
-		//console.log(util.inspect(err));
-		//console.log(util.inspect(timestamp));
-		//console.log(util.inspect(path));
-	});
-
-
-	// restart for timelapse -- so just close out
-	camera.on('exit', function(timestamp)
-	{
-			console.log("exit");
-			camera.stop();
-			console.log("picture taken at: " + util.inspect(timestamp));
-				// send image in email
-		transporter.sendMail(
-		{       sender: 'raspberry.pi.iot.automation@gmail.com',
-				to:'ee.tinkerer@gmail.com',
-				subject:'Photo taken!',
-				body:'',
-				html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
-			attachments: [{
-				filename: 'img0.jpg',
-				path: './images/img0.jpg',
-				cid: 'unique@kreata.ee' //same cid value as in the html img src
-			}]
-
-		},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
-	});
-
-	camera.start();
 }
 
 function setOutput(data){
@@ -295,5 +254,40 @@ function writeEventLog(string){//event log file, and socket emit for text log on
 		console.log(string);//debug
 	});
 	io.emit('log', now, string);//emit log to all sockets so that their sites are up to date 
+}
+function picture(timestamp){//takes a picture
+	//camera events
+	var img_path;
+	camera.on('start', function(err, timestamp)
+	{
+		if(err != null) console.log(err);
+	});
+	camera.on('read', function(err, timestamp, path)
+	{
+		if(err != null) console.log(err);
+		img_path = path;
+	});
+	camera.on('exit', function(timestamp)
+	{
+		camera.stop();
+		return img_path;
+	});
+	camera.start();
+}
+function emailPicture(email){
+		transporter.sendMail(
+	{       sender: 'raspberry.pi.iot.automation@gmail.com',
+			to:'ee.tinkerer@gmail.com',
+			subject:'Photo taken!',
+			body:'',
+			html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
+		attachments: [{
+			filename: 'img0.jpg',
+			path: './images/img0.jpg',
+			cid: 'unique@kreata.ee' //same cid value as in the html img src
+		}]
+
+	},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
+	
 	
 }
