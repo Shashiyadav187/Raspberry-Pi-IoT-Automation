@@ -55,6 +55,9 @@ function post_auth (req, res) {
 	app.use(express.static(path.join(__dirname + '/public'))); //serves static content stored inside public directory
 }
 
+var spawn = require('child_process').spawn;
+var proc;
+
 var sockets = {};
 
 //build websocket functionality
