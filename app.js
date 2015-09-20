@@ -291,6 +291,7 @@ function writeEventLog(string){//event log file, and socket emit for text log on
 	fs.appendFile("events.log", now + "," + string + '\n', function(err) {
 		if(err) {return console.log(err);}
 		else console.log("Event Log: " + now + "," + string + '\n');
+		console.log(string);//debug
 	});
 	io.emit('log', now, string);//emit log to all sockets so that their sites are up to date 
 	
