@@ -6,6 +6,8 @@ To use this repo:
  2. "npm install"
  3. "node app.js"  
  4. Connect your web browser to the ngrok tunnel URL
-  
+
 NOTE: as of 9/9/2015 the latest version of Raspbian has broken the node module onoff, the app.js now requires superuser priveledges to run  
 [here] (https://github.com/raspberrypi/linux/issues/1117) is the current fix
+
+[Schematic.fzz](https://github.com/shredd/Raspberry-Pi-IoT-Automation/blob/master/Schematic.fzz) is a [Fritzing](http://fritzing.org/home/) file. It requires the [AdaFruit Fritzing Library](https://github.com/adafruit/Fritzing-Library) for the PIR sensor.
