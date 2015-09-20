@@ -84,7 +84,7 @@ io.on('connection', function (socket) {//this function is run each time a client
 	socket.on('newEvent', newEvent);
 	socket.on('takepic', function(){
 		emailPicture(picture, "sn.bailey11@gmail.com");
-	};
+	});
 	for(var x=0; x < jobs.length; x++){
 		socket.emit('addEvent', jobs[x]);
 	}
