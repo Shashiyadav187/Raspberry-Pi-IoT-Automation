@@ -325,7 +325,7 @@ function writeConnLog(string){//connections log file
 	var now = new Date();
 	fs.appendFile("connections.log", now + "," + string + '\n', function(err) {
 		if(err) { return console.log(err); }
-		else console.log(Connection Log: now + "," + string + '\n')
+		else console.log("Connection Log: " + now + "," + string + '\n')
 	});
 }
 function writeEventLog(string){//event log file, and socket emit for text log on site
