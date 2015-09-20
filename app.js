@@ -162,7 +162,7 @@ if(device[0].camera == "true") {
 			console.log("picture taken at: " + util.inspect(timestamp));
 				// send image in email
 		var data = fs.readFileSync("./images/img0.jpg"); 
-		transporter.send_mail(
+		transporter.sendMail(
 		{       sender: 'raspberry.pi.iot.automation@gmail.com',
 				to:'ee.tinkerer@gmail.com',
 				subject:'Photo taken!',
