@@ -29,8 +29,9 @@ for(var i = 0; i < devices.length; i++) {
 			className = "list-group-item-danger";
 		}
 		
-		$('#output_div')[0].innerHTML = $('#output_div')[0].innerHTML + '<a id="' + id + '" href="#" style="width: 25%; text-align: center;" class="list-group-item ' + className + '">' + checked + '</a><br/>'
-	}}
+		$('#output_div')[0].innerHTML = $('#output_div')[0].innerHTML + '<a id="' + id + '" href="#" style="text-align: center;" class="list-group-item ' + className + '">' + checked + '</a><br/>'
+	}
+}
 
 function switchPage(page_from, page_to) {
 	$('#' + page_from).css('display','none');

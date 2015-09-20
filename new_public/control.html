@@ -105,13 +105,13 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <h1>Devices</h1>
-		<div id="input_div">
-			<!-- <a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-success">Button ON</a><br/>
-			<a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-danger">Button OFF</a><br/> -->
-		</div>
-		<div id="output_div">
+		<div id="output_div" class="col-sm-3" style="display:inline-grid">
 			<!-- <div style="margin:20px" ><input id="device_1" type="checkbox" checked><p>Lamp 1</p></div>
 			<div style="margin:20px" ><input id="device_2" type="checkbox" checked><p>Lamp 2</p></div> -->
+		</div>
+		<div id="input_div" style="display:-webkit-inline-box">
+			<!-- <a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-success">Button ON</a><br/>
+			<a href="#" style="width: 25%; text-align: center;" class="list-group-item list-group-item-danger">Button OFF</a><br/> -->
 		</div>
       </div>
 
@@ -491,7 +491,7 @@
 		show_time_gui();
 	} );
 	</script>
-	<!-- <script type="text/javascript" src="/socket.io/socket.io.js"></script> -->
-    <!-- <script src="./js/control.js"></script> -->
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="./js/control.js"></script>
 
 </body></html>

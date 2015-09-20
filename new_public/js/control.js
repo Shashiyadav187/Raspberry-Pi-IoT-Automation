@@ -7,71 +7,24 @@ socket.on('device', deviceobject);//global object
 function deviceobject(dev){
 	device = dev;
 }
-
-for(var i = 0; i < devices.length; i++) {
-	var name = devices[i].name;
-	var state = devices[i].state;
-	var active = devices[i].active;
-	var highmsg = devices[i].highmsg;
-	var lowmsg = devices[i].lowmsg;
-	var checked = "";
-	
-	if(state == "out") {
-		//for output
-		id = i*10 + 2;
-		if(active == "high") checked = "checked"
-		
-		$('#input_div')[0].innerHTML = $('#input_div')[0].innerHTML + '<div style="margin:20px" ><input id="' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
-	} else {
-		//for input
-		id = i*10;
-		var active = true;
-		var className;
-		if(active) {
-			checked = highmsg
-			className = "list-group-item-success";
-		}
-		else {
-			checked = lowmsg
-			className = "list-group-item-danger";
-		}
-		
-		$('#output_div')[0].innerHTML = $('#output_div')[0].innerHTML + '<a id="' + id + '" href="#" style="width: 25%; text-align: center;" class="list-group-item "' + className + '"">' + checked + '</a><br/>'
-	}
-	
-	
-	var onswitch = setOutput(this.id, this.checked);
-	var checked;
-	if(state == "in") checked = "checked";
-	else checked = "";
-	
-	var is_button
-	if(devices[i].active === 'high') {
-		is_button = false;
-	} else {
-		is_button = true;
-		if(state == "in") checked = devices[i].highmsg;
-		else checked = devices[i].lowmsg;
-	}
-	
-	if(!is_button) 
-	else 
-}
-
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
-
 	var id = data.id * 10;
-	var name = data.name;
-	var state = data.val;
-	var onswitch = setOutput(this.id, this.checked);
-	var checked
-	if(state == "in") checked = "checked";
-	else checked = "";
+	var tr = document.getElementById("div-output").appendChild(document.createElement("TR"));
+	tr.setAttribute("class", "output");
 	
-	//$('#devices_div')[0].innerHTML = $('#devices_div')[0].innerHTML + '<div style="margin:20px" ><input id="device_' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
-	
-	//event scheduling
+	var leftdiv = document.createElement("TD");
+		leftdiv.setAttribute("class", "label");
+		leftdiv.appendChild(document.createTextNode(data.name + ":"));
+	tr.appendChild(leftdiv);
+
+	var rightdiv = document.createElement("TD");
+	rightdiv.setAttribute("class", "onoff-container");
+
+	var onoffswitch1 = createOnOffSwitch(id, data.val, "setOutput(this.id, this.checked);");
+	rightdiv.appendChild(onoffswitch1);
+	tr.appendChild(rightdiv);
+
 		//now write options for event scheduling
 	var eventdiv = document.getElementById("eventOptions").appendChild(document.createElement("TR"));
 	eventdiv.setAttribute("name", "event-schedule");
@@ -115,8 +68,63 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 
 	// start streaming
 	socket.emit('start-stream');
-}
 
+	/*(function(element) {
+		if( element.className == "onoff-container event")
+		{
+			element.className = "onoff-container event true";
+		}
+		else if (element.className == "onoff-container event true")
+		{
+			element.className = "onoff-container event";
+		}
+	})(eventdiv);
+	*/
+	/*var eventradioon = document.createElement("input");
+	eventradioon.setAttribute("type", "radio");
+	eventradioon.checked = true;
+	eventradioon.setAttribute("id", id + 4);
+	eventradioon.setAttribute("name", id + "radio");
+	var on = document.createTextNode("On: ");
+	mideventdiv.appendChild(on);
+	mideventdiv.appendChild(eventradioon);
+	*/
+	/*var righteventdiv = eventdiv.appendChild(document.createElement("DIV"));
+	righteventdiv.setAttribute("class", "pure-u-1-3 right-div");
+	var eventradiooff = document.createElement("input");
+	eventradiooff.setAttribute("type", "radio");
+	eventradiooff.setAttribute("id", id + 3);
+	eventradiooff.setAttribute("name", id + "radio");
+	var off = document.createTextNode("Off: ");
+	righteventdiv.appendChild(off);
+	righteventdiv.appendChild(eventradiooff);
+	*/
+}
+function createOnOffSwitch(id, state, onclickFunction)
+{
+		var onoffswitch = document.createElement("DIV");
+		onoffswitch.setAttribute("class", "onoffswitch");
+	var onoffswitchinput = document.createElement("input");
+		onoffswitchinput.setAttribute("type", "checkbox");
+		onoffswitchinput.setAttribute("name", "onoffswitch");
+		onoffswitchinput.setAttribute("class", "onoffswitch-checkbox");
+		onoffswitchinput.setAttribute("id", id);
+	if (state == 1) {onoffswitchinput.checked = true;}
+	else if (state == 0) {onoffswitchinput.checked = false;}
+		if (onclickFunction !== undefined){ onoffswitchinput.setAttribute("onclick", onclickFunction); }//only set onclick attribute of a function is passed
+	onoffswitch.appendChild(onoffswitchinput);
+	var onoffswitchlabel = document.createElement("label");
+		onoffswitchlabel.setAttribute("class", "onoffswitch-label");
+		onoffswitchlabel.setAttribute("for", id);
+	onoffswitch.appendChild(onoffswitchlabel);
+	var onoffswitchspani = document.createElement("span");
+		onoffswitchspani.setAttribute("class", "onoffswitch-inner");
+	onoffswitchlabel.appendChild(onoffswitchspani);
+	var onoffswitchspans = document.createElement("span");
+		onoffswitchspans.setAttribute("class", "onoffswitch-switch");
+	onoffswitchlabel.appendChild(onoffswitchspans);
+	return(onoffswitch);
+}
 function setOutput(id, state){
 	var ids = id;//the ones place corresponds to the operation to be performed (all id's have been multiplied by 10)
 	if(state == true) ids++;//if the checkbox has been checked, set the ones place equal to 1, indicating that the on operation
