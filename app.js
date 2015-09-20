@@ -13,6 +13,7 @@ var util = require('util');
 var nodemailer = require('nodemailer');
 var jobs = [];//stores all the jobs that are currently active
 var email = require('./private/email.json');
+var ngrok_obj = require('./private/ngrok.json');
 
 //build server functionality
 server.listen(ngrok_obj.addr);// note implement process.env.port
@@ -21,7 +22,6 @@ app.get('/', auth);
 
 //console.log("Now listening on port " + port); //write to the console which port is being used
 
-var ngrok_obj = require('./private/ngrok.json');
 ngrok.connect(ngrok_obj, function (err, url) {
 	if(err)	console.log("NGROK ERR: " + err);
 	else console.log("URL: " + url);
