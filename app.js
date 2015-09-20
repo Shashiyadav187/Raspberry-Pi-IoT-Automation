@@ -123,12 +123,11 @@ if(device[0].camera == "true") {
 	};
 	// start it up
 	var camera = new require("raspicam")(cameraOptions);
-	camera.start();
 
 	// go to website/pic to see image
 	app.get('/pic', function(req, res)
 	{
-	res.sendFile(__dirname + '/img.jpg');
+	res.sendFile(__dirname + '/img0.jpg');
 	});
 	//camera events
 	camera.on('start', function(err, timestamp)
@@ -151,6 +150,7 @@ if(device[0].camera == "true") {
 		camera.stop();
 		console.log("picture taken at: " + util.inspect(timestamp));
 	});	
+	camera.start();
 }
 
 
