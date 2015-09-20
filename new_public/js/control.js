@@ -9,15 +9,53 @@ function deviceobject(dev){
 }
 
 for(var i = 0; i < devices.length; i++) {
-	var id = devices[i].id;
 	var name = devices[i].name;
 	var state = devices[i].state;
+	var active = devices[i].active;
+	var highmsg = devices[i].highmsg;
+	var lowmsg = devices[i].lowmsg;
+	var checked = "";
+	
+	if(state == "out") {
+		//for output
+		id = i*10 + 2;
+		if(active == "high") checked = "checked"
+		
+		$('#input_div')[0].innerHTML = $('#input_div')[0].innerHTML + '<div style="margin:20px" ><input id="' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
+	} else {
+		//for input
+		id = i*10;
+		var active = true;
+		var className;
+		if(active) {
+			checked = highmsg
+			className = "list-group-item-success";
+		}
+		else {
+			checked = lowmsg
+			className = "list-group-item-danger";
+		}
+		
+		$('#output_div')[0].innerHTML = $('#output_div')[0].innerHTML + '<a id="' + id + '" href="#" style="width: 25%; text-align: center;" class="list-group-item "' + className + '"">' + checked + '</a><br/>'
+	}
+	
+	
 	var onswitch = setOutput(this.id, this.checked);
-	var checked
+	var checked;
 	if(state == "in") checked = "checked";
 	else checked = "";
 	
-	$('#devices_div')[0].innerHTML = $('#devices_div')[0].innerHTML + '<div style="margin:20px" ><input id="device_' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
+	var is_button
+	if(devices[i].active === 'high') {
+		is_button = false;
+	} else {
+		is_button = true;
+		if(state == "in") checked = devices[i].highmsg;
+		else checked = devices[i].lowmsg;
+	}
+	
+	if(!is_button) 
+	else 
 }
 
 socket.on('addOutput', addOutput);
@@ -31,7 +69,7 @@ function addOutput(data){//draws buttons and scheduling devices on screen
 	if(state == "in") checked = "checked";
 	else checked = "";
 	
-	$('#devices_div')[0].innerHTML = $('#devices_div')[0].innerHTML + '<div style="margin:20px" ><input id="device_' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
+	//$('#devices_div')[0].innerHTML = $('#devices_div')[0].innerHTML + '<div style="margin:20px" ><input id="device_' + id + '"  type="checkbox" ' + checked + '><p>' + name + '</p></div>'
 	
 	//event scheduling
 		//now write options for event scheduling
