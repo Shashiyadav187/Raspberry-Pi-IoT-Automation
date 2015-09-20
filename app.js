@@ -161,7 +161,7 @@ if(device[0].camera == "true") {
 	        subject:'Photo taken!',
 	        body:'',
 	        attachments : [{'filename': 'img0.jpg','contents':data}]
-	}),function(error, success){});
+	}),function(error, success)});
 
 	// restart for timelapse -- so just close out
 	camera.on('exit', function(timestamp)
