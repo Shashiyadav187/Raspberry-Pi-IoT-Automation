@@ -277,7 +277,7 @@ function picture(timestamp){//takes a picture
 function emailPicture(email){
 		transporter.sendMail(
 	{       sender: 'raspberry.pi.iot.automation@gmail.com',
-			to:'ee.tinkerer@gmail.com',
+			to:email,
 			subject:'Photo taken!',
 			body:'',
 			html: 'Embedded image:<br><img src="cid:unique@kreata.ee"/>',
@@ -287,7 +287,7 @@ function emailPicture(email){
 			cid: 'unique@kreata.ee' //same cid value as in the html img src
 		}]
 
-	},function(error, info){console.log(util.inspect(error));console.log(util.inspect(info));});
-	
-	
+	},function(error, info){
+		if(error) console.log(error);
+	});
 }
