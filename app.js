@@ -61,12 +61,10 @@ var transporter = nodemailer.createTransport(email.login);
 
 //build websocket functionality
 io.on('connection', function (socket) {//this function is run each time a clients connects (on the connection event)
-	writeLog("New Connection from IP: " + socket.handshake.headers['x-forwarded-for'] + "\t" + io.engine.clientsCount + " socket(s) connected");
-	writeLog("time: " + socket.handshake.headers.time);
-	writeLog("host: " + socket.handshake.headers.host);
-	writeLog("browser: " + socket.handshake.headers['user-agent']);
-	writeLog("language: " + socket.handshake.headers['accept-language']);
-	writeLog("internal ip: " + socket.handshake.headers.address);
+	writeConnLog("connect," + socket.handshake.headers['x-forwarded-for'] + ","
+		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language'] + ","
+		+ socket.handshake.headers['accept-language'] + "," + socket.handshake.headers.address);
 
 
 	socket.emit('device', device);//send device variable from device.json (MUST BE FIRST THING SENT)
@@ -91,7 +89,10 @@ io.on('connection', function (socket) {//this function is run each time a client
 
 
 	socket.on('disconnect', function(){
-	  console.log("End Connection from IP: " + socket.request.connection.remoteAddress + "\t" + io.engine.clientsCount + " socket(s) connected");
+	  writeConnLog("disconnect," + socket.handshake.headers['x-forwarded-for'] + ","
+		+ io.engine.clientsCount + "," + socket.handshake.headers.host + ","
+		+ socket.handshake.headers['user-agent'] + "," + socket.handshake.headers['accept-language'] + ","
+		+ socket.handshake.headers['accept-language'] + "," + socket.handshake.headers.address);
 	});
 
 });
@@ -320,9 +321,17 @@ process.on('cleanup', exitDevices);
   });
   
   
-function writeLog(string){
+function writeConnLog(string){//connections log file
 	var now = new Date();
-	fs.appendFile("log.txt", now + string, function(err) {
+	fs.appendFile("connections.log", now + "," + string + '\n', function(err) {
 		if(err) { return console.log(err); }
+		else console.log(Connection Log: now + "," + string + '\n')
 	});
+}
+function writeEventLog(string){//event log file, and socket emit for text log on site
+	var now = new Date();
+	fs.appendFile("events.log", now + "," + string + '\n', function(err) {
+		if(err) {return console.log(err);}
+	});
+	io.emit('log', now, string);//emit log to all sockets so that their sites are up to date 
 }
