@@ -8,8 +8,7 @@ function deviceobject(dev){
 	device = dev;
 }
 socket.on('log', function (now, string){
-	var log = document.getElementById("textconsole").value
-	log += now + ": " + string + "\n";	
+	document.getElementById("textconsole").value += now + ": " + string + "\n";	
 });
 socket.on('addOutput', addOutput);
 function addOutput(data){//draws buttons and scheduling devices on screen
