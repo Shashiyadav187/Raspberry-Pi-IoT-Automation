@@ -144,6 +144,7 @@ function setOutput(data){
 			var x = Math.floor(data[z] / 10);//finds the device array index of the operation
 			var y = (data[z] % 10)-2;//finds the value to be written (which is 1 or zero and is stored in the ones place)
 			pin[device[x].pin].writeSync(y);
+			console.log(x);
 			io.emit('outdate', x, y);//output update, if anyone chnages the state of a light, all clients should see that change
 			if (z == 0) csv = device[x].name + ":" + y + ",";
 			else if (z < (data.length - 1)) csv += device[x].name + ":" + y + ",";
@@ -185,6 +186,7 @@ function newEvent(data){
 	{
 		var deviceindex = Math.floor(data.op[x] / 10);
 		var devicestate = (data.op[x] - 2) % 10;
+		console.log(deviceindex);
 		jobs[index].op[x] = device[deviceindex].name +" state: " + devicestate;
 	}
 	jobs[index].id = job_id;
