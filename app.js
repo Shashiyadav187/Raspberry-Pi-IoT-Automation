@@ -113,35 +113,34 @@ for(var x = 1; x < device.length; x++){
 	}
 	if (x == device.length - 1) {console.log("Devices initialized");}
 }
-
-/* +++++++++ Taking pictures ++++++++++++ */
-
- // options for the camera
-var cameraOptions = {
+//initialize camera if device file specifies "true"
+if(device[0].camera == "true") {
+	var cameraOptions = { // options for the camera from device.json
     mode        : "photo",
     output      : 'images/camera.jpg'
-};
+	};
+	// start it up
+	var camera = new require("raspicam")(cameraOptions);
+	camera.start();
 
-// start it up
-var camera = new require("raspicam")(cameraOptions);
-camera.start();
+	// go to website/pic to see image
+	app.get('/pic', function(req, res)
+	{
+	res.sendFile(__dirname + '/images/camera.jpg');
+	});
 
-// go to website/pic to see image
-app.get('/pic', function(req, res)
-{
-    res.sendFile(__dirname + '/images/camera.jpg');
-});
+	// restart for timelapse -- so just close out
+	camera.on("exit", function()
+	{
+	camera.stop();
+	//console.log('Restarting camera...')
+	//camera.start()
+	});	
+}
 
-// restart for timelapse -- so just close out
-camera.on("exit", function()
-{
-    camera.stop();
-    //console.log('Restarting camera...')
-    //camera.start()
-});
 
 /* +++++++++ File Streaming ++++++++++++ */
-
+/*
 function stopStreaming() {
   if (Object.keys(sockets).length == 0) {
     app.set('watchingFile', false);
@@ -149,7 +148,8 @@ function stopStreaming() {
     fss.unwatchFile('./stream/image_stream.jpg');
   }
 }
-
+*/
+/*
 function startStreaming(io) {
 
   if (app.get('watchingFile')) {
@@ -170,7 +170,7 @@ function startStreaming(io) {
 
 }
 
-
+*/
 function setOutput(data){
 	if(data.constructor === Array){//arrays are passed when scheduled events include multiple items
 		for(var z = 0; z < data.length; z++){
