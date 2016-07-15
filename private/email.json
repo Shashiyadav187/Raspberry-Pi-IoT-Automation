@@ -2,9 +2,9 @@
 	"login" : {
 		"service": "Gmail",
 		"auth" : {
-			"user" : "raspberry.pi.iot.automation@gmail.com",
-			"pass" : "raspiiotautomation"
+			"user" : "sendingaccounthere@gmail.com",
+			"pass" : "***passwordhere***"
 		}
 	},
-	"reciever" : "sn.bailey11@gmail.com, ee.tinkerer@gmail.com"
+	"reciever" : "user1@mailservicehere.com, user2mailservicehere.com"
 }
