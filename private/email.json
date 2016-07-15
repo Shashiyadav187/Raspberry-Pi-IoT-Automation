@@ -6,5 +6,5 @@
 			"pass" : "***passwordhere***"
 		}
 	},
-	"reciever" : "user1@mailservicehere.com, user2mailservicehere.com"
+	"reciever" : "user1@mailservicehere.com, user2@mailservicehere.com"
 }
